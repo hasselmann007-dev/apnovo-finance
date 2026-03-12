@@ -25,11 +25,11 @@ export default function Login() {
         
         // Setup initial profile
         if (data?.user) {
-          await supabase.from('profiles').insert({
+          await supabase.from('profiles').upsert({
             id: data.user.id,
             display_name: displayName || email.split('@')[0],
             meta_economia: 1000 // default goal
-          });
+          }, { onConflict: 'id' });
         }
         
         setErrorMsg('Cadastro realizado! Verifique seu email caso necessário, ou faça login.');

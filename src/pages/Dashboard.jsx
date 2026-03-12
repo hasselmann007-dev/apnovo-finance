@@ -35,13 +35,24 @@ export default function Dashboard({ session }) {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Get profile
+            // Get profile safely
             const { data: profileData } = await supabase
                 .from('profiles')
                 .select('*')
                 .eq('id', session.user.id)
-                .single();
-            setProfile(profileData);
+                .maybeSingle();
+                
+            if (!profileData) {
+                const fallbackProfile = {
+                    id: session.user.id,
+                    display_name: session.user.email.split('@')[0],
+                    meta_economia: 1000
+                };
+                await supabase.from('profiles').upsert(fallbackProfile, { onConflict: 'id' });
+                setProfile(fallbackProfile);
+            } else {
+                setProfile(profileData);
+            }
 
             // Get transactions
             const { data: transData } = await supabase
