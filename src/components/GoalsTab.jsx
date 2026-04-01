@@ -180,7 +180,7 @@ export default function GoalsTab({ session }) {
       setProgressForm({ id: null, valorExtra: '' });
   };
 
-  if (loading) return <div className="text-center p-10 font-poppins text-gray-500 dark:text-gray-400 font-bold">Carregando metas...</div>;
+  if (loading) return <div className="text-center p-10 text-gray-500 dark:text-gray-400 font-bold">Carregando metas...</div>;
 
   return (
     <div className="animate-in fade-in duration-500 space-y-6">
@@ -189,7 +189,7 @@ export default function GoalsTab({ session }) {
       </header>
 
       {/* Gamification Top Panel */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-800 dark:from-slate-800 dark:to-slate-900 rounded-[32px] p-6 lg:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-primary-700/20 border border-primary-500/30 dark:border-slate-700">
+      <div className="bg-gradient-to-r from-primary-600 to-primary-800 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-6 lg:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-primary-700/20 border border-primary-500/30 dark:border-slate-700">
         <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 w-full">
           <div className="bg-white/20 p-4 rounded-full backdrop-blur-sm border border-white/20 shrink-0 relative">
             <div className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10 animate-bounce">Novo</div>
@@ -197,7 +197,7 @@ export default function GoalsTab({ session }) {
           </div>
           <div>
             <span className="text-primary-100 dark:text-slate-400 font-bold uppercase tracking-widest text-xs mb-1 block">Seu Desempenho</span>
-            <h2 className="text-2xl lg:text-3xl font-black font-poppins flex items-center justify-center sm:justify-start gap-2">
+            <h2 className="text-2xl lg:text-3xl font-black flex items-center justify-center sm:justify-start gap-2">
                Nível 3 <span className="text-amber-400">Bronze</span>
             </h2>
             <p className="text-primary-100 dark:text-slate-300 mt-2 text-sm leading-relaxed max-w-lg">
@@ -230,7 +230,7 @@ export default function GoalsTab({ session }) {
            const isCompleted = goal.status === 'concluida' || percent >= 100;
 
            return (
-             <div key={goal.id} onClick={() => navigate(`/metas/${goal.id}`)} className="bg-white dark:bg-slate-800 p-6 rounded-[32px] border border-gray-100 dark:border-slate-700 shadow-sm flex flex-col hover:-translate-y-1 transition-transform relative overflow-hidden group cursor-pointer">
+             <div key={goal.id} onClick={() => navigate(`/metas/${goal.id}`)} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm flex flex-col hover:-translate-y-1 transition-transform relative overflow-hidden group cursor-pointer">
                {!goal.hideProgressBar && (
                  <div className="absolute top-0 left-0 h-1 bg-gray-100 dark:bg-slate-700 w-full">
                     <div className="h-full bg-primary-500 transition-all duration-1000" style={{ width: `${percent}%` }}></div>
@@ -253,7 +253,7 @@ export default function GoalsTab({ session }) {
                  </div>
                </div>
                
-               <h3 className="text-xl font-poppins font-bold text-gray-900 dark:text-white mb-2 leading-tight pr-4">
+               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight pr-4">
                  {goal.titulo}
                </h3>
 
@@ -299,11 +299,11 @@ export default function GoalsTab({ session }) {
         })}
         
         {/* Create new Goal Card Hint */}
-        <div onClick={() => setIsWizardOpen(true)} className="bg-white dark:bg-slate-800 p-6 rounded-[32px] border-2 border-dashed border-gray-200 dark:border-slate-700 shadow-sm flex flex-col hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50/20 dark:hover:bg-primary-900/20 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer items-center justify-center text-center min-h-[220px] group">
+        <div onClick={() => setIsWizardOpen(true)} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border-2 border-dashed border-gray-200 dark:border-slate-700 shadow-sm flex flex-col hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50/20 dark:hover:bg-primary-900/20 hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer items-center justify-center text-center min-h-[220px] group">
            <div className="p-4 bg-gray-50 dark:bg-slate-700/50 rounded-full shadow-sm text-gray-400 dark:text-slate-400 mb-4 group-hover:bg-primary-100 group-hover:text-primary-600 transition-colors">
              <Plus size={32} />
            </div>
-           <h3 className="font-poppins font-bold text-gray-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Criar Nova Caixinha</h3>
+           <h3 className="font-bold text-gray-600 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Criar Nova Caixinha</h3>
            <p className="text-sm text-gray-400 dark:text-slate-400 mt-2">Dê o primeiro passo para sua próxima grande conquista financeira.</p>
         </div>
       </div>
@@ -317,9 +317,9 @@ export default function GoalsTab({ session }) {
       {/* Modal Nova/Editar Meta legacy */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-primary-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-[32px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
+            <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
                 <div className="p-8 border-b border-gray-50 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
-                    <h3 className="text-2xl font-poppins font-black text-primary-700 dark:text-white flex items-center gap-3">
+                    <h3 className="text-2xl font-black text-primary-700 dark:text-white flex items-center gap-3">
                         <Target size={28} /> {editingGoal ? 'Editar Caixinha' : 'Nova Caixinha'}
                     </h3>
                     <button onClick={closeModal} className="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-full text-gray-400 hover:text-rose-500 transition-colors shadow-sm"><X size={24} /></button>
@@ -327,7 +327,7 @@ export default function GoalsTab({ session }) {
 
                 <form onSubmit={handleSaveGoal} className="p-8 space-y-6">
                     <div>
-                        <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Título da Meta</label>
+                        <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Título da Meta</label>
                         <input
                             type="text"
                             value={form.titulo}
@@ -340,7 +340,7 @@ export default function GoalsTab({ session }) {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Objetivo (R$)</label>
+                            <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Objetivo (R$)</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -352,7 +352,7 @@ export default function GoalsTab({ session }) {
                             <span className="text-[9px] text-gray-400 ml-1 mt-1 block">Deixe 0 para criar metas de hábitos.</span>
                         </div>
                         <div>
-                            <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Prazo / Duração</label>
+                            <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Prazo / Duração</label>
                             <select
                                 value={form.prazo}
                                 onChange={(e) => setForm({ ...form, prazo: e.target.value })}
@@ -369,7 +369,7 @@ export default function GoalsTab({ session }) {
 
                     <button
                         type="submit"
-                        className="w-full bg-primary-600 text-white py-5 rounded-[20px] font-poppins font-black text-lg transition-all shadow-xl shadow-primary-600/20 hover:bg-primary-700 hover:-translate-y-1"
+                        className="w-full bg-primary-600 text-white py-5 rounded-xl font-black text-lg transition-all shadow-xl shadow-primary-600/20 hover:bg-primary-700 hover:-translate-y-1"
                     >
                         {editingGoal ? 'Salvar Alterações' : 'Criar Caixinha'}
                     </button>
@@ -381,7 +381,7 @@ export default function GoalsTab({ session }) {
       {/* Modal Adicionar Progresso */}
       {isProgressModalOpen && (
         <div className="fixed inset-0 bg-primary-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-slate-800 w-full max-w-sm rounded-[32px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700 text-center">
+            <div className="bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700 text-center">
                 <div className="bg-primary-50/50 dark:bg-slate-700/50 p-6 flex justify-between">
                     <div className="w-24"></div>
                     <div className="bg-white dark:bg-slate-800 p-4 rounded-full shadow-md text-primary-600 dark:text-primary-400 border border-primary-100 dark:border-slate-600 -mb-12 z-10 mx-auto">
@@ -394,7 +394,7 @@ export default function GoalsTab({ session }) {
 
                 <form onSubmit={handleUpdateProgress} className="p-8 pt-10 space-y-6">
                     <div>
-                        <h4 className="font-poppins font-black text-xl text-primary-700 dark:text-white mb-1">Ótimo avanço!</h4>
+                        <h4 className="font-black text-xl text-primary-700 dark:text-white mb-1">Ótimo avanço!</h4>
                         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Quanto você guardou hoje para essa meta?</p>
                     </div>
 
@@ -415,7 +415,7 @@ export default function GoalsTab({ session }) {
 
                     <button
                         type="submit"
-                        className="w-full bg-primary-600 text-white py-4 rounded-2xl font-poppins font-black text-lg transition-all shadow-lg shadow-primary-600/30 hover:bg-primary-700 hover:scale-[1.02] active:scale-95"
+                        className="w-full bg-primary-600 text-white py-4 rounded-2xl font-black text-lg transition-all shadow-lg shadow-primary-600/30 hover:bg-primary-700 hover:scale-[1.02] active:scale-95"
                     >
                         Depositar
                     </button>

@@ -212,7 +212,7 @@ export default function GoalDetailView({ session }) {
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-6 rounded-[32px] shadow-sm border border-gray-100 dark:border-slate-700">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
            <div className="flex items-center gap-4">
              <button onClick={() => navigate('/dashboard')} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors text-gray-500 dark:text-slate-400">
                <ArrowLeft size={24} />
@@ -226,7 +226,7 @@ export default function GoalDetailView({ session }) {
                    </span>
                  )}
                </div>
-               <h1 className="text-2xl md:text-3xl font-black font-poppins text-gray-900 dark:text-white">{goal.titulo}</h1>
+               <h1 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white">{goal.titulo}</h1>
              </div>
            </div>
            
@@ -248,9 +248,9 @@ export default function GoalDetailView({ session }) {
            <div className="lg:col-span-2 space-y-6">
               
               {/* Level Tracker Visual */}
-              <div className="bg-white dark:bg-slate-800 p-8 rounded-[32px] shadow-sm border border-gray-100 dark:border-slate-700">
+              <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="font-poppins font-bold text-gray-900 dark:text-white">Sua Jornada</h3>
+                    <h3 className="font-bold text-gray-900 dark:text-white">Sua Jornada</h3>
                     <span className="text-primary-600 dark:text-primary-400 font-bold">{percentage.toFixed(1)}% Completo</span>
                  </div>
                  
@@ -296,8 +296,8 @@ export default function GoalDetailView({ session }) {
               </div>
 
               {/* Gráfico Recharts */}
-              <div className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-[32px] shadow-sm border border-gray-100 dark:border-slate-700">
-                <h3 className="font-poppins font-bold text-gray-900 dark:text-white mb-6">Gráfico de Crescimento</h3>
+              <div className="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-6">Gráfico de Crescimento</h3>
                 <div className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -325,7 +325,7 @@ export default function GoalDetailView({ session }) {
            <div className="space-y-6">
               
               {/* Dia D Panel */}
-              <div className="bg-primary-900 dark:bg-slate-800 text-white rounded-[32px] p-6 shadow-xl relative overflow-hidden group">
+              <div className="bg-primary-900 dark:bg-slate-800 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden group">
                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary-800 dark:bg-slate-700 rounded-full blur-3xl opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
                  <h3 className="text-primary-200 dark:text-slate-400 text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2"><Calendar size={16}/> Dia D Acionável</h3>
                  <div className="flex items-end gap-2 mb-2">
@@ -342,12 +342,12 @@ export default function GoalDetailView({ session }) {
               </div>
 
               {/* Ações */}
-              <div className="bg-white dark:bg-slate-800 p-6 rounded-[32px] shadow-sm border border-gray-100 dark:border-slate-700">
-                 <h3 className="font-poppins font-bold text-gray-900 dark:text-white mb-4">Movimentar</h3>
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                 <h3 className="font-bold text-gray-900 dark:text-white mb-4">Movimentar</h3>
                  
                  {!isAddingMode && !isRemovingMode ? (
                    <div className="space-y-3">
-                     <button onClick={() => setIsAddingMode(true)} className="w-full bg-emerald-500 hover:bg-emerald-600 outline-none text-white py-4 rounded-2xl font-bold font-poppins transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+                     <button onClick={() => setIsAddingMode(true)} className="w-full bg-emerald-500 hover:bg-emerald-600 outline-none text-white py-4 rounded-2xl font-bold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
                         <Plus size={20} /> Guardar Dinheiro
                      </button>
                      <button onClick={() => setIsRemovingMode(true)} className="w-full bg-gray-50 dark:bg-slate-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-gray-600 dark:text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 outline-none py-3 rounded-2xl font-bold transition-colors flex items-center justify-center gap-2 border border-transparent hover:border-rose-200 dark:hover:border-rose-900/50">
@@ -405,8 +405,8 @@ export default function GoalDetailView({ session }) {
               </div>
 
               {/* Histórico Recente */}
-              <div className="bg-white dark:bg-slate-800 p-6 rounded-[32px] shadow-sm border border-gray-100 dark:border-slate-700">
-                 <h3 className="font-poppins font-bold text-gray-900 dark:text-white mb-4">Extrato da Meta</h3>
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                 <h3 className="font-bold text-gray-900 dark:text-white mb-4">Extrato da Meta</h3>
                  <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                     {transactions.length === 0 ? (
                        <p className="text-sm text-gray-400 dark:text-slate-500 text-center py-4">Nenhuma movimentação registrada.</p>

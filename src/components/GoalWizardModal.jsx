@@ -109,12 +109,12 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 bg-primary-950/60 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
-      <div className="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-[32px] sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-2xl sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
         <div className="p-6 sm:px-10 sm:pt-10 pb-4 border-b border-gray-50 dark:border-slate-700/50 flex justify-between items-center sticky top-0 bg-white/90 dark:bg-slate-800/90 z-20 backdrop-blur-sm">
           <div>
-            <h3 className="text-2xl font-poppins font-black text-gray-900 dark:text-white flex items-center gap-3">
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
               <Rocket className="text-primary-500" size={28} /> Assistente de Metas
             </h3>
             <p className="text-sm font-medium text-gray-500 dark:text-slate-400 mt-1">Sua jornada gamificada para o sucesso.</p>
@@ -325,7 +325,7 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
               <div className="inline-flex p-4 bg-primary-50 dark:bg-primary-900/30 text-primary-500 dark:text-primary-400 rounded-full mb-4">
                 <Target size={40} className="animate-pulse" />
               </div>
-              <h4 className="text-xl font-poppins font-black text-gray-900 dark:text-white mb-2">Diagnóstico Rápido</h4>
+              <h4 className="text-xl font-black text-gray-900 dark:text-white mb-2">Diagnóstico Rápido</h4>
               <p className="text-gray-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
                 Para acumular os <strong className="text-primary-600 dark:text-primary-400">R$ {Math.max(0, parseFloat(formData.valor_objetivo || 0) - parseFloat(formData.valor_inicial || 0)).toLocaleString('pt-BR')}</strong> restantes, precisamos definir o seu <strong>"Ritmo de Poupança"</strong>. 
                 Isso deve caber no seu bolso sem gerar estresse.
@@ -351,7 +351,7 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
           {step === 4 && (
             <div className="animate-in slide-in-from-right-4 duration-300 space-y-6">
               <div>
-                <h4 className="text-xl font-poppins font-black text-gray-900 dark:text-white mb-2">Escolha seu Caminho</h4>
+                <h4 className="text-xl font-black text-gray-900 dark:text-white mb-2">Escolha seu Caminho</h4>
                 <p className="text-sm text-gray-500 dark:text-slate-400">Analisamos os números. Qual jornada faz mais sentido para você agora?</p>
               </div>
 
@@ -368,7 +368,7 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
                   <div className={`p-3 w-max rounded-xl mb-4 ${formData.plan_type === 'aggressive' ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400 group-hover:bg-rose-100 group-hover:text-rose-500'}`}>
                     <Flame size={24} />
                   </div>
-                  <h5 className="font-poppins font-black text-lg text-gray-900 dark:text-white mb-1">Agressivo</h5>
+                  <h5 className="font-black text-lg text-gray-900 dark:text-white mb-1">Agressivo</h5>
                   <p className="text-xs font-bold text-rose-500 uppercase tracking-widest mb-4">Finaliza em ~6 Meses</p>
                   
                   <div className="text-2xl font-black text-gray-900 dark:text-white mb-1">
@@ -395,7 +395,7 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
                   <div className={`p-3 w-max rounded-xl mb-4 ${formData.plan_type === 'comfortable' ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400 group-hover:bg-emerald-100 group-hover:text-emerald-500'}`}>
                     <Heart size={24} />
                   </div>
-                  <h5 className="font-poppins font-black text-lg text-gray-900 dark:text-white mb-1">Confortável</h5>
+                  <h5 className="font-black text-lg text-gray-900 dark:text-white mb-1">Confortável</h5>
                   <p className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-4">Finaliza em ~12 Meses</p>
                   
                   <div className="text-2xl font-black text-gray-900 dark:text-white mb-1">
@@ -422,7 +422,7 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
                  </div>
               </div>
               
-              <h4 className="text-3xl font-poppins font-black text-gray-900 dark:text-white mb-4">Tudo Pronto!</h4>
+              <h4 className="text-3xl font-black text-gray-900 dark:text-white mb-4">Tudo Pronto!</h4>
               <p className="text-gray-500 dark:text-slate-400 max-w-sm mx-auto mb-6 font-medium leading-relaxed">
                 Transformamos sua meta em uma jornada. 
                 Cada avanço garantirá <strong>XP</strong>.

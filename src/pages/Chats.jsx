@@ -66,7 +66,7 @@ export default function Chats({ session }) {
       <main className="flex-1 p-6 md:p-12 max-h-screen overflow-y-auto w-full max-w-5xl mx-auto">
         <button 
           onClick={() => navigate('/dashboard')}
-          className="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-poppins font-bold mb-8 transition-colors"
+          className="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-bold mb-8 transition-colors"
         >
           <ArrowLeft size={20} /> Voltar ao Painel
         </button>
@@ -77,7 +77,7 @@ export default function Chats({ session }) {
               <MessageSquare size={32} strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-4xl font-poppins font-black text-gray-900 dark:text-white tracking-tight">Comunidades IA</h1>
+              <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Comunidades IA</h1>
               <p className="text-gray-500 dark:text-slate-400 font-medium mt-1">Converse com nossos especialistas em inteligência artificial.</p>
             </div>
           </div>
@@ -89,15 +89,15 @@ export default function Chats({ session }) {
               <div 
                 key={chat.id}
                 onClick={() => setSelectedChat(chat)}
-                className="bg-white dark:bg-slate-800 p-8 rounded-[32px] border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-primary-200 dark:hover:border-primary-500 transition-all cursor-pointer group hover:-translate-y-1 flex flex-col items-start"
+                className="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:border-primary-200 dark:hover:border-primary-500 transition-all cursor-pointer group hover:-translate-y-1 flex flex-col items-start"
               >
                 <div className="text-5xl mb-6 bg-gray-50 dark:bg-slate-900/50 p-4 rounded-3xl group-hover:bg-primary-50 dark:group-hover:bg-primary-900/30 transition-colors">
                   {chat.icon}
                 </div>
-                <h3 className="text-xl font-poppins font-black text-gray-900 dark:text-white mb-3 leading-tight">{chat.title}</h3>
+                <h3 className="text-xl font-black text-gray-900 dark:text-white mb-3 leading-tight">{chat.title}</h3>
                 <p className="text-gray-500 dark:text-slate-400 text-sm mb-8 flex-1">{chat.description}</p>
                 
-                <button className="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-poppins font-bold w-full justify-between mt-auto group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
+                <button className="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-bold w-full justify-between mt-auto group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
                   <span>Acessar Chat</span>
                   <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -110,7 +110,7 @@ export default function Chats({ session }) {
                 <div className="flex items-center gap-4">
                     <div className="text-3xl bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-sm">{selectedChat.icon}</div>
                     <div>
-                        <h2 className="text-xl font-poppins font-black text-gray-900 dark:text-white leading-tight">{selectedChat.title}</h2>
+                        <h2 className="text-xl font-black text-gray-900 dark:text-white leading-tight">{selectedChat.title}</h2>
                         <p className="text-xs font-bold text-primary-500 uppercase tracking-widest">Assistente IA Online</p>
                     </div>
                 </div>
@@ -176,7 +176,7 @@ export default function Chats({ session }) {
                 <button 
                     type="submit"
                     disabled={!inputValue.trim() || isTyping}
-                    className="bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:hover:bg-primary-600 text-white px-6 py-4 rounded-full shadow-lg shadow-primary-600/30 transition-all flex items-center gap-2 font-poppins font-bold disabled:cursor-not-allowed"
+                    className="bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:hover:bg-primary-600 text-white px-6 py-4 rounded-full shadow-lg shadow-primary-600/30 transition-all flex items-center gap-2 font-bold disabled:cursor-not-allowed"
                 >
                     <Send size={20} /> Enviar
                 </button>

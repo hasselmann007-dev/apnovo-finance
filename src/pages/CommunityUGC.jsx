@@ -104,7 +104,7 @@ export default function CommunityUGC({ session }) {
                 </header>
 
                 {isPosting && (
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-[32px] border border-gray-100 dark:border-slate-700 shadow-sm mb-8 animate-in slide-in-from-top-4">
+                    <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm mb-8 animate-in slide-in-from-top-4">
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-6">Nova Postagem</h3>
                         <form onSubmit={handlePost} className="space-y-4">
                             <div>
@@ -140,7 +140,7 @@ export default function CommunityUGC({ session }) {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {tips.map(tip => (
-                            <div key={tip.id} className="bg-white dark:bg-slate-800 p-6 rounded-[32px] border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+                            <div key={tip.id} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group flex flex-col">
                                 <div className="mb-4 flex-1">
                                     <h4 className="font-black text-lg text-gray-900 dark:text-white mb-2 leading-tight">{tip.title}</h4>
                                     <p className="text-gray-600 dark:text-slate-400 text-sm line-clamp-4">{tip.content}</p>

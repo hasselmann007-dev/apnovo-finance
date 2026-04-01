@@ -155,7 +155,7 @@ export default function Dashboard({ session }) {
         setForm({ tipo: 'despesa', descricao: '', valor: '', categoria: 'Outros', data: new Date().toISOString().split('T')[0] });
     };
 
-    if (loading) return <div className="p-10 text-center font-poppins font-bold text-gray-400">Carregando painel...</div>;
+    if (loading) return <div className="p-10 text-center font-bold text-gray-400">Carregando painel...</div>;
 
     const renderTabContent = () => {
       switch (activeTab) {
@@ -184,28 +184,28 @@ export default function Dashboard({ session }) {
 
             <main className="flex-1 p-6 md:p-12 max-h-screen overflow-y-auto w-full relative z-0">
                 {/* Horizontal Touchbar for Navigation */}
-                <div className="bg-white dark:bg-slate-800 rounded-[20px] p-1.5 mb-8 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between w-full transition-colors">
+                <div className="bg-white dark:bg-slate-800 rounded-xl p-1.5 mb-8 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between w-full transition-colors">
                     <button
                         onClick={() => setActiveTab('dashboard')}
-                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'dashboard' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'dashboard' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Visão Geral
                     </button>
                     <button
                         onClick={() => setActiveTab('extratos')}
-                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'extratos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'extratos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Extrato
                     </button>
                     <button
                         onClick={() => setActiveTab('metas')}
-                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'metas' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'metas' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Metas
                     </button>
                     <button
                         onClick={() => setActiveTab('investimentos')}
-                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'investimentos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'investimentos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Ativos
                     </button>
@@ -218,11 +218,11 @@ export default function Dashboard({ session }) {
                             type="month"
                             value={selectedMonth}
                             onChange={(e) => setSelectedMonth(e.target.value)}
-                            className="bg-white dark:bg-slate-800 text-primary-700 dark:text-white font-poppins font-bold px-4 py-4 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm outline-none focus:border-primary-500 transition-all cursor-pointer"
+                            className="bg-white dark:bg-slate-800 text-primary-700 dark:text-white font-bold px-4 py-4 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm outline-none focus:border-primary-500 transition-all cursor-pointer"
                         />
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-2xl font-poppins font-bold transition-all shadow-xl shadow-primary-600/20 hover:-translate-y-0.5"
+                            className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-xl shadow-primary-600/20 hover:-translate-y-0.5"
                         >
                             <Plus size={20} strokeWidth={3} /> Lançar Entrada
                         </button>
@@ -239,31 +239,31 @@ export default function Dashboard({ session }) {
                   title="Assistência IA e Chats"
                 >
                   <MessageCircle size={28} strokeWidth={2.5} />
-                  <span className="font-poppins font-bold text-sm hidden md:block whitespace-nowrap overflow-hidden max-w-0 group-hover:max-w-xs transition-all duration-300 ease-in-out">Assistência IA</span>
+                  <span className="font-bold text-sm hidden md:block whitespace-nowrap overflow-hidden max-w-0 group-hover:max-w-xs transition-all duration-300 ease-in-out">Assistência IA</span>
                 </button>
             </main>
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-primary-700/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-[32px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
+                    <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
                         <div className="p-8 border-b border-gray-50 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
-                            <h3 className="text-2xl font-poppins font-black text-primary-700 dark:text-white">{editingId ? 'Editar Lançamento' : 'Novo Lançamento'}</h3>
+                            <h3 className="text-2xl font-black text-primary-700 dark:text-white">{editingId ? 'Editar Lançamento' : 'Novo Lançamento'}</h3>
                             <button onClick={closeModal} className="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-full text-gray-400 hover:text-rose-500 transition-colors shadow-sm"><X size={24} /></button>
                         </div>
 
                         <form onSubmit={handleSave} className="p-8 space-y-6">
-                            <div className="flex bg-gray-100 dark:bg-slate-900 p-1.5 rounded-[20px]">
+                            <div className="flex bg-gray-100 dark:bg-slate-900 p-1.5 rounded-xl">
                                 <button
                                     type="button"
                                     onClick={() => setForm({ ...form, tipo: 'receita' })}
-                                    className={`flex-1 py-3 text-sm font-poppins font-bold rounded-[15px] transition-all ${form.tipo === 'receita' ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-gray-500 dark:text-slate-400'}`}
+                                    className={`flex-1 py-3 text-sm font-bold rounded-[15px] transition-all ${form.tipo === 'receita' ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-gray-500 dark:text-slate-400'}`}
                                 >
                                     Entrada
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setForm({ ...form, tipo: 'despesa' })}
-                                    className={`flex-1 py-3 text-sm font-poppins font-bold rounded-[15px] transition-all ${form.tipo === 'despesa' ? 'bg-white dark:bg-slate-800 text-rose-600 dark:text-rose-400 shadow-sm' : 'text-gray-500 dark:text-slate-400'}`}
+                                    className={`flex-1 py-3 text-sm font-bold rounded-[15px] transition-all ${form.tipo === 'despesa' ? 'bg-white dark:bg-slate-800 text-rose-600 dark:text-rose-400 shadow-sm' : 'text-gray-500 dark:text-slate-400'}`}
                                 >
                                     Gasto (Saída)
                                 </button>
@@ -271,7 +271,7 @@ export default function Dashboard({ session }) {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="md:col-span-2">
-                                    <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Descrição</label>
+                                    <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Descrição</label>
                                     <input
                                         type="text"
                                         value={form.descricao}
@@ -283,7 +283,7 @@ export default function Dashboard({ session }) {
                                 </div>
 
                                 <div>
-                                    <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Valor R$</label>
+                                    <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Valor R$</label>
                                     <input
                                         type="number"
                                         step="0.01"
@@ -296,7 +296,7 @@ export default function Dashboard({ session }) {
                                 </div>
 
                                 <div>
-                                    <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Categoria</label>
+                                    <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Categoria</label>
                                     <select
                                         value={form.categoria}
                                         onChange={(e) => setForm({ ...form, categoria: e.target.value })}
@@ -315,7 +315,7 @@ export default function Dashboard({ session }) {
                                     </select>
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="text-[10px] font-poppins font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Data</label>
+                                    <label className="text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Data</label>
                                     <input
                                         type="date"
                                         value={form.data}
@@ -328,7 +328,7 @@ export default function Dashboard({ session }) {
 
                             <button
                                 type="submit"
-                                className={`w-full text-white py-5 rounded-[20px] font-poppins font-black text-lg transition-all shadow-xl hover:-translate-y-1 ${form.tipo === 'receita' ? 'bg-primary-600 hover:bg-primary-700 shadow-primary-600/20' : 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/20'}`}
+                                className={`w-full text-white py-5 rounded-xl font-black text-lg transition-all shadow-xl hover:-translate-y-1 ${form.tipo === 'receita' ? 'bg-primary-600 hover:bg-primary-700 shadow-primary-600/20' : 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/20'}`}
                             >
                                 {editingId ? 'Salvar Alterações' : 'Confirmar Lançamento'}
                             </button>
