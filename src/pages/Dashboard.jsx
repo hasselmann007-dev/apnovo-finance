@@ -7,6 +7,7 @@ import DashboardSidebar from '../components/DashboardSidebar';
 import OverviewTab from '../components/OverviewTab';
 import ExtractsTab from '../components/ExtractsTab';
 import GoalsTab from '../components/GoalsTab';
+import InvestmentsTab from '../components/InvestmentsTab';
 
 export default function Dashboard({ session }) {
     const navigate = useNavigate();
@@ -15,7 +16,15 @@ export default function Dashboard({ session }) {
     const [loading, setLoading] = useState(true);
     
     // Novas abas: dashboard (Visão Geral), extratos, metas
-    const [activeTab, setActiveTab] = useState('dashboard');
+    const [activeTab, setActiveTab] = useState(() => {
+        return localStorage.getItem('apnovo_dashboard_tab') || 'dashboard';
+    });
+
+    useEffect(() => {
+        localStorage.setItem('apnovo_dashboard_tab', activeTab);
+    }, [activeTab]);
+
+    const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState(null);
 
@@ -69,24 +78,29 @@ export default function Dashboard({ session }) {
         await supabase.auth.signOut();
     };
 
+    const filteredTransactions = useMemo(() => {
+        if (!selectedMonth) return transactions;
+        return transactions.filter(t => t.data.startsWith(selectedMonth));
+    }, [transactions, selectedMonth]);
+
     const totals = useMemo(() => {
-        const receitas = transactions.filter(t => t.tipo === 'receita').reduce((sum, t) => sum + Number(t.valor), 0);
-        const despesas = transactions.filter(t => t.tipo === 'despesa').reduce((sum, t) => sum + Number(t.valor), 0);
+        const receitas = filteredTransactions.filter(t => t.tipo === 'receita').reduce((sum, t) => sum + Number(t.valor), 0);
+        const despesas = filteredTransactions.filter(t => t.tipo === 'despesa').reduce((sum, t) => sum + Number(t.valor), 0);
         return {
             receitas,
             despesas,
             saldo: receitas - despesas,
-            totalRegistros: transactions.length
+            totalRegistros: filteredTransactions.length
         };
-    }, [transactions]);
+    }, [filteredTransactions]);
 
     const pieData = useMemo(() => {
         const groups = {};
-        transactions.filter(t => t.tipo === 'despesa').forEach(t => {
+        filteredTransactions.filter(t => t.tipo === 'despesa').forEach(t => {
             groups[t.categoria] = (groups[t.categoria] || 0) + Number(t.valor);
         });
         return Object.keys(groups).map(name => ({ name, value: groups[name] }));
-    }, [transactions]);
+    }, [filteredTransactions]);
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -146,11 +160,13 @@ export default function Dashboard({ session }) {
     const renderTabContent = () => {
       switch (activeTab) {
         case 'dashboard':
-          return <OverviewTab transactions={transactions} totals={totals} pieData={pieData} startEdit={startEdit} deleteItem={deleteItem} />;
+          return <OverviewTab transactions={filteredTransactions} totals={totals} pieData={pieData} startEdit={startEdit} deleteItem={deleteItem} />;
         case 'extratos':
           return <ExtractsTab />;
         case 'metas':
           return <GoalsTab session={session} />;
+        case 'investimentos':
+          return <InvestmentsTab session={session} />;
         default:
           return null;
       }
@@ -171,32 +187,46 @@ export default function Dashboard({ session }) {
                 <div className="bg-white dark:bg-slate-800 rounded-[20px] p-1.5 mb-8 shadow-sm border border-gray-100 dark:border-slate-700 flex items-center justify-between w-full transition-colors">
                     <button
                         onClick={() => setActiveTab('dashboard')}
-                        className={`flex-1 py-4 text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'dashboard' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'dashboard' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Visão Geral
                     </button>
                     <button
                         onClick={() => setActiveTab('extratos')}
-                        className={`flex-1 py-4 text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'extratos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'extratos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Extrato
                     </button>
                     <button
                         onClick={() => setActiveTab('metas')}
-                        className={`flex-1 py-4 text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'metas' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'metas' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
                     >
                         Metas
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('investimentos')}
+                        className={`flex-1 py-4 text-[10px] md:text-xs font-poppins font-bold uppercase tracking-widest rounded-2xl transition-all ${activeTab === 'investimentos' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-slate-700/50' : 'text-gray-400 dark:text-slate-400 hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-slate-700/30'}`}
+                    >
+                        Ativos
                     </button>
                 </div>
 
                 <header className="flex justify-end items-center gap-4 mb-10">
                     {activeTab === 'dashboard' && (
-                      <button
-                          onClick={() => setIsModalOpen(true)}
-                          className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-2xl font-poppins font-bold transition-all shadow-xl shadow-primary-600/20 hover:-translate-y-0.5"
-                      >
-                          <Plus size={20} strokeWidth={3} /> Lançar Entrada
-                      </button>
+                      <>
+                        <input
+                            type="month"
+                            value={selectedMonth}
+                            onChange={(e) => setSelectedMonth(e.target.value)}
+                            className="bg-white dark:bg-slate-800 text-primary-700 dark:text-white font-poppins font-bold px-4 py-4 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm outline-none focus:border-primary-500 transition-all cursor-pointer"
+                        />
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-2xl font-poppins font-bold transition-all shadow-xl shadow-primary-600/20 hover:-translate-y-0.5"
+                        >
+                            <Plus size={20} strokeWidth={3} /> Lançar Entrada
+                        </button>
+                      </>
                     )}
                 </header>
 

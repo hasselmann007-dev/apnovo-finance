@@ -13,18 +13,23 @@ export default function ExtractsTab() {
             </div>
           </div>
           <h3 className="text-2xl font-poppins font-black text-primary-700 dark:text-white mb-4">Análise Automática de Extratos</h3>
-          <p className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto mb-8">
-            Em breve! Poderá importar seus extratos bancários em formatos PDF ou XLS. A IA "Finance Organizer" vai ler, categorizar e gerar relatórios instantâneos e gargalos.
+          <p className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto mb-8 font-medium">
+            Em breve! Você poderá importar seus extratos bancários em formatos PDF ou XLS. A IA "Finance Organizer" vai ler, categorizar e gerar relatórios instantâneos e encontrar gargalos financeiros para você.
           </p>
 
-          <div className="border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-[24px] p-8 w-full max-w-2xl bg-gray-50/50 dark:bg-slate-700/50 flex flex-col items-center justify-center opacity-70 cursor-not-allowed">
-            <FileText size={32} className="text-gray-400 dark:text-slate-500 mb-3" />
-            <span className="font-bold text-gray-500 dark:text-slate-400">Arraste e solte o seu extrato (PDF/XLS)</span>
-            <span className="text-xs text-gray-400 dark:text-slate-500 mt-2">Funcionalidade em desenvolvimento...</span>
-            <button disabled className="mt-6 bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 font-bold px-6 py-3 rounded-xl">
+          <label className="relative border-2 border-dashed border-primary-200 dark:border-primary-900/50 hover:border-primary-400 rounded-[32px] p-12 w-full max-w-2xl bg-primary-50/30 hover:bg-primary-50/60 dark:bg-slate-800/50 flex flex-col items-center justify-center cursor-pointer transition-all group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary-100/20 dark:to-primary-900/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <FileText size={48} className="text-primary-400 dark:text-primary-500 mb-4 group-hover:scale-110 group-hover:-translate-y-1 transition-transform" />
+            <span className="font-poppins font-black text-xl text-primary-700 dark:text-primary-400 mb-2 relative z-10">Arraste seu extrato para cá</span>
+            <span className="font-bold text-gray-500 dark:text-slate-400 relative z-10">ou clique para selecionar (PDF/XLS)</span>
+            <input type="file" className="hidden" disabled />
+            <div className="mt-8 px-6 py-3 bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 font-bold rounded-xl shadow-sm border border-primary-100 dark:border-slate-600 relative z-10 group-hover:bg-primary-600 group-hover:text-white transition-colors">
               Selecionar Arquivo
-            </button>
-          </div>
+            </div>
+            <div className="absolute top-4 right-4 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+              Em Desenvolvimento
+            </div>
+          </label>
         </div>
       </div>
 

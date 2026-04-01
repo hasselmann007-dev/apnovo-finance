@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { ArrowLeft, Target, TrendingUp, TrendingDown, Clock, Calendar, Edit2, Trash2, Plus, Minus, Trophy, Rocket, Shield } from 'lucide-react';
+import { ArrowLeft, Target, TrendingUp, TrendingDown, Clock, Calendar, Edit2, Trash2, Plus, Minus, Trophy, Rocket, Shield, CheckCircle } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function GoalDetailView({ session }) {
@@ -80,6 +80,11 @@ export default function GoalDetailView({ session }) {
     if (tipo === 'retirada' && !transMotive.trim()) return;
 
     const val = parseFloat(transAmount);
+    
+    // Calculo de pre-atualizacao
+    const updatedProgress = tipo === 'adicao' ? currentTotal + val : currentTotal - val;
+    const newStatus = updatedProgress >= targetValue && targetValue > 0 ? 'concluida' : 'em_andamento';
+
     // Em meta real conectada
     if (!String(id).startsWith('mock-')) {
       try {
@@ -88,9 +93,16 @@ export default function GoalDetailView({ session }) {
           user_id: session.user.id,
           tipo,
           valor: val,
-          motivo: tipo === 'retirada' ? transMotive : null
+          motivo: tipo === 'retirada' ? transMotive : 'Aporte pela tela de detalhes'
         });
         if (error) throw error;
+        
+        // Sincroniza o progresso global cacheado e o status na tabela pai
+        await supabase.from('metas_financeiras').update({ 
+           progresso: updatedProgress,
+           status: newStatus
+        }).eq('id', id);
+
       } catch (e) {
         console.error("Error saving transaction", e);
         return;
@@ -102,14 +114,26 @@ export default function GoalDetailView({ session }) {
       id: Date.now().toString(),
       tipo,
       valor: val,
-      motivo: tipo === 'retirada' ? transMotive : null,
+      motivo: tipo === 'retirada' ? transMotive : 'Aporte pela tela de detalhes',
       created_at: new Date().toISOString()
     }]);
+    
+    // Atualiza o goal.progresso localmente tambem para ser seguro
+    setGoal(prev => ({...prev, progresso: updatedProgress, status: newStatus}));
     
     setTransAmount('');
     setTransMotive('');
     setIsAddingMode(false);
     setIsRemovingMode(false);
+  };
+
+  const handleDeleteGoal = async () => {
+     if(window.confirm("Deseja mesmo remover permanentemente esta meta e todos os registros atrelados à ela?")) {
+         if (!String(id).startsWith('mock-')) {
+           await supabase.from('metas_financeiras').delete().eq('id', id);
+         }
+         navigate('/dashboard');
+     }
   };
 
   if (loading) {
@@ -160,12 +184,14 @@ export default function GoalDetailView({ session }) {
      };
   });
   
+  const safeGoalCreatedAt = goal.created_at ? new Date(goal.created_at) : new Date();
+  
   // Add first point if missing
-  if (chartData.length === 0 || transactions.length > 0 && new Date(transactions[0].created_at).getTime() > new Date(goal.created_at).getTime()) {
+  if (chartData.length === 0 || (transactions.length > 0 && new Date(transactions[0].created_at).getTime() > safeGoalCreatedAt.getTime())) {
     chartData.unshift({
-      date: new Date(goal.created_at).toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' }),
+      date: safeGoalCreatedAt.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' }),
       saldo: initialValue,
-      timestamp: new Date(goal.created_at).getTime()
+      timestamp: safeGoalCreatedAt.getTime()
     });
   }
 
@@ -210,6 +236,9 @@ export default function GoalDetailView({ session }) {
               </div>
               <button className="p-2.5 bg-gray-50 dark:bg-slate-700 text-gray-600 dark:text-slate-300 rounded-full hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors tooltip" title="Editar Meta">
                 <Edit2 size={18} />
+              </button>
+              <button onClick={handleDeleteGoal} className="p-2.5 bg-gray-50 dark:bg-slate-700 text-rose-500 rounded-full hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors tooltip" title="Excluir Meta">
+                <Trash2 size={18} />
               </button>
            </div>
         </div>

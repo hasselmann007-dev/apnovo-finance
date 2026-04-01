@@ -38,12 +38,12 @@ export default function DashboardSidebar({ activeTab, setActiveTab, profile, ses
         >
           <FileText size={20} strokeWidth={2} /> Histórico
         </button>
-        <div className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-2xl font-poppins font-bold text-sm text-gray-400 dark:text-slate-500 opacity-60 bg-gray-50 dark:bg-slate-800 cursor-not-allowed">
-          <div className="flex items-center gap-3">
-             <TrendingUp size={20} strokeWidth={2} /> Investimentos
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        </div>
+        <button
+          onClick={() => setActiveTab('investimentos')}
+          className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-poppins font-bold text-sm transition-all ${activeTab === 'investimentos' ? 'bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-400 shadow-sm' : 'text-gray-500 hover:bg-gray-50 dark:text-slate-400 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400'}`}
+        >
+          <TrendingUp size={20} strokeWidth={2} /> Investimentos
+        </button>
       </nav>
 
       <div className="mt-auto pt-8 flex flex-col gap-4">

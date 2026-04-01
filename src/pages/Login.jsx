@@ -51,14 +51,14 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex flex-col md:flex-row font-sans text-primary-700 dark:text-slate-100 transition-colors">
       {/* Left Side - Branding (Desktop only) */}
-      <div className="hidden md:flex flex-col justify-center items-start w-1/2 p-20 bg-primary-700 text-white relative overflow-hidden">
+      <div className="hidden md:flex flex-col justify-center items-start w-1/2 p-20 bg-primary-700 dark:bg-slate-900 border-r border-slate-800 text-white relative overflow-hidden">
         {/* Abstract Green Shapes for premium feel */}
         <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-primary-600 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
         
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-8">
-            <div className="bg-white text-primary-700 p-3 rounded-2xl shadow-xl">
+            <div className="bg-white dark:bg-slate-800 text-primary-700 dark:text-primary-500 p-3 rounded-2xl shadow-xl">
                <TrendingUp size={32} strokeWidth={3} />
             </div>
             <div className="flex flex-col leading-none">

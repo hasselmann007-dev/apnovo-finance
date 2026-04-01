@@ -25,13 +25,47 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
     monthly_capacity: '',
     plan_type: 'comfortable', // aggressive, comfortable, custom
     prazo: '12 meses',
-    valor_inicial: ''
+    valor_inicial: '',
+    quiz: {}
   });
 
   if (!isOpen) return null;
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 5));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
+
+  const isQuizValid = () => {
+    switch (formData.category) {
+      case 'Reserva de Emergência':
+        return !!formData.quiz?.custo_mensal && !!formData.quiz?.meses_protecao;
+      case 'Quitar Dívidas':
+        return !!formData.quiz?.divida_total && !!formData.quiz?.divida_juros && !!formData.quiz?.atraso;
+      case 'Comprar Específico':
+        return !!formData.quiz?.comprar_item && !!formData.quiz?.comprar_prazo;
+      case 'Guardar Dinheiro':
+        return !!formData.quiz?.perfil_risco && !!formData.quiz?.tempo_investimento;
+      default:
+        return false;
+    }
+  };
+
+  const handleNextStep1 = () => {
+    let prefilledVal = formData.valor_objetivo;
+    let prefilledTitle = formData.titulo;
+    
+    if (formData.category === 'Reserva de Emergência' && formData.quiz?.custo_mensal && formData.quiz?.meses_protecao) {
+      prefilledVal = (parseFloat(formData.quiz.custo_mensal) * parseInt(formData.quiz.meses_protecao)).toString();
+      if (!prefilledTitle) prefilledTitle = 'Reserva de Emergência';
+    } else if (formData.category === 'Quitar Dívidas' && formData.quiz?.divida_total) {
+      prefilledVal = formData.quiz.divida_total;
+      if (!prefilledTitle) prefilledTitle = 'Quitação de Dívidas';
+    } else if (formData.category === 'Comprar Específico' && formData.quiz?.comprar_item) {
+      if (!prefilledTitle) prefilledTitle = formData.quiz.comprar_item;
+    }
+    
+    setFormData(prev => ({ ...prev, valor_objetivo: prefilledVal || prev.valor_objetivo, titulo: prefilledTitle || prev.titulo }));
+    nextStep();
+  };
 
   const handleCreate = () => {
     // Calcular prazo caso seja diferente
@@ -48,7 +82,9 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
       valor_inicial: parseFloat(formData.valor_inicial) || 0,
       hideProgressBar: false,
       motive: formData.motive,
-      plan_type: formData.plan_type
+      plan_type: formData.plan_type,
+      categoria: formData.category,
+      motivacao: JSON.stringify(formData.quiz || {})
     };
 
     onSave(newGoal);
@@ -118,6 +154,103 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
                   </div>
                 ))}
               </div>
+
+              {/* Dynamic Quiz Section */}
+              {formData.category && (
+                <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-300 border-t border-gray-100 dark:border-slate-800 pt-6">
+                  {formData.category === 'Reserva de Emergência' && (
+                    <div className="space-y-4">
+                      <h5 className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-2"><Shield size={18}/> Entendendo sua Reserva</h5>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Qual seu custo de vida mensal atual?</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">R$</span>
+                          <input type="number" placeholder="0.00" value={formData.quiz?.custo_mensal || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, custo_mensal: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-emerald-500 rounded-xl p-3 pl-12 outline-none text-sm font-bold text-gray-900 dark:text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Quantos meses de proteção você deseja?</label>
+                        <select value={formData.quiz?.meses_protecao || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, meses_protecao: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-emerald-500 rounded-xl p-3 outline-none text-sm font-bold text-gray-900 dark:text-white cursor-pointer select-none appearance-none">
+                          <option value="" disabled>Selecione os meses</option>
+                          <option value="3">3 meses (Básico)</option>
+                          <option value="6">6 meses (Recomendado)</option>
+                          <option value="12">12 meses (Super Seguro)</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.category === 'Quitar Dívidas' && (
+                    <div className="space-y-4">
+                      <h5 className="font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2"><TrendingDown size={18}/> Entendendo sua Dívida</h5>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Qual o valor total das dívidas?</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">R$</span>
+                          <input type="number" placeholder="0.00" value={formData.quiz?.divida_total || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, divida_total: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-rose-500 rounded-xl p-3 pl-12 outline-none text-sm font-bold text-gray-900 dark:text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Qual a taxa de juros média mensal?</label>
+                        <div className="relative">
+                          <input type="number" placeholder="Ex: 5" value={formData.quiz?.divida_juros || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, divida_juros: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-rose-500 rounded-xl p-3 outline-none text-sm font-bold text-gray-900 dark:text-white" />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">%</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-2">Você tem parcelas em atraso?</label>
+                        <div className="flex gap-2">
+                          <button onClick={() => setFormData({...formData, quiz: {...formData.quiz, atraso: 'sim'}})} className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all border-2 ${formData.quiz?.atraso === 'sim' ? 'border-rose-500 bg-rose-50 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400' : 'border-transparent bg-gray-50 text-gray-500 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800'}`}>Sim</button>
+                          <button onClick={() => setFormData({...formData, quiz: {...formData.quiz, atraso: 'nao'}})} className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all border-2 ${formData.quiz?.atraso === 'nao' ? 'border-emerald-500 bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : 'border-transparent bg-gray-50 text-gray-500 dark:bg-slate-900 hover:bg-gray-100 dark:hover:bg-slate-800'}`}>Não</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.category === 'Comprar Específico' && (
+                    <div className="space-y-4">
+                      <h5 className="font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2"><ShoppingCart size={18}/> Detalhes da Compra</h5>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">O que você planeja comprar?</label>
+                        <input type="text" placeholder="Ex: Carro, Viagem..." value={formData.quiz?.comprar_item || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, comprar_item: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-blue-500 rounded-xl p-3 outline-none text-sm font-bold text-gray-900 dark:text-white" />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Quando gostaria de realizar a compra?</label>
+                        <select value={formData.quiz?.comprar_prazo || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, comprar_prazo: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-blue-500 rounded-xl p-3 outline-none text-sm font-bold text-gray-900 dark:text-white cursor-pointer appearance-none">
+                          <option value="" disabled>Selecione um prazo</option>
+                          <option value="curto">Em até 6 meses</option>
+                          <option value="medio">Entre 6 meses e 1 ano</option>
+                          <option value="longo">Mais de 1 ano</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.category === 'Guardar Dinheiro' && (
+                    <div className="space-y-4">
+                      <h5 className="font-bold text-primary-600 dark:text-primary-400 flex items-center gap-2"><Target size={18}/> Perfil de Investidor</h5>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Qual o seu perfil de risco?</label>
+                        <select value={formData.quiz?.perfil_risco || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, perfil_risco: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-xl p-3 outline-none text-sm font-bold text-gray-900 dark:text-white cursor-pointer appearance-none">
+                          <option value="" disabled>Selecione seu perfil</option>
+                          <option value="conservador">Conservador (Mais focado em segurança)</option>
+                          <option value="moderado">Moderado (Equilíbrio)</option>
+                          <option value="arrojado">Arrojado (Aceita riscos pra lucrar mais)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-gray-500 dark:text-slate-400 block mb-1">Por quanto tempo pretende investir?</label>
+                        <select value={formData.quiz?.tempo_investimento || ''} onChange={(e) => setFormData({...formData, quiz: {...formData.quiz, tempo_investimento: e.target.value}})} className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-xl p-3 outline-none text-sm font-bold text-gray-900 dark:text-white cursor-pointer appearance-none">
+                          <option value="" disabled>Selecione um prazo</option>
+                          <option value="1_a_3">1 a 3 anos</option>
+                          <option value="3_a_5">3 a 5 anos</option>
+                          <option value="mais_5">Mais de 5 anos</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -322,9 +455,9 @@ export default function GoalWizardModal({ isOpen, onClose, onSave }) {
           </button>
           
           <button 
-            onClick={step === 5 ? handleCreate : nextStep}
+            onClick={step === 5 ? handleCreate : (step === 1 ? handleNextStep1 : nextStep)}
             disabled={
-              (step === 1 && !formData.category) ||
+              (step === 1 && (!formData.category || !isQuizValid())) ||
               (step === 2 && (!formData.titulo || !formData.valor_objetivo || !formData.motive)) ||
               (step === 3 && !formData.monthly_capacity) ||
               (step === 4 && !formData.plan_type)

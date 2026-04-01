@@ -126,7 +126,17 @@ export default function GoalsTab({ session }) {
 
       try {
         if (!String(goal.id).startsWith('mock')) {
+            // Update the main goal's progress
             await supabase.from('metas_financeiras').update({ progresso: newProgress, status }).eq('id', goal.id);
+            
+            // Insert the transaction
+            await supabase.from('movimentacoes_meta').insert({
+              meta_id: goal.id,
+              user_id: session.user.id,
+              tipo: 'adicao',
+              valor: extra,
+              motivo: 'Aporte pela tela inicial'
+            });
         }
         setGoals(goals.map(g => g.id === goal.id ? { ...g, progresso: newProgress, status } : g));
         closeProgressModal();
