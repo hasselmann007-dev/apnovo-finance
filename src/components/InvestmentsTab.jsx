@@ -16,6 +16,30 @@ export default function InvestmentsTab({ session }) {
     rendimento_percentual: ''
   });
 
+  const [operationType, setOperationType] = useState('aporte'); // 'aporte' or 'resgate'
+
+  useEffect(() => {
+    const handleOpenNovoAporte = () => {
+      setOperationType('aporte');
+      setForm({ ativo: '', categoria: 'Renda Fixa', valor_investido: '', rendimento_percentual: '' });
+      setIsModalOpen(true);
+    };
+
+    const handleOpenRegistrarResgate = () => {
+      setOperationType('resgate');
+      setForm({ ativo: '', categoria: 'Renda Fixa', valor_investido: '', rendimento_percentual: '' });
+      setIsModalOpen(true);
+    };
+
+    window.addEventListener('open-novo-aporte', handleOpenNovoAporte);
+    window.addEventListener('open-registrar-resgate', handleOpenRegistrarResgate);
+
+    return () => {
+      window.removeEventListener('open-novo-aporte', handleOpenNovoAporte);
+      window.removeEventListener('open-registrar-resgate', handleOpenRegistrarResgate);
+    };
+  }, []);
+
   const COLORS = ['#6BC270', '#8B5CF6', '#F59E0B', '#06B6D4', '#9CA3AF'];
 
   useEffect(() => {
@@ -49,23 +73,60 @@ export default function InvestmentsTab({ session }) {
     if (!form.ativo || isNaN(valor)) return;
 
     try {
-      const payload = {
-        user_id: session.user.id,
-        ativo: form.ativo,
-        categoria: form.categoria,
-        valor_investido: valor,
-        rendimento_percentual: rendimento
-      };
+      if (operationType === 'resgate') {
+        const existingAsset = portfolio.find(item => item.ativo === form.ativo);
+        if (!existingAsset) {
+          alert('Ativo não encontrado no seu portfólio para realizar o resgate.');
+          return;
+        }
 
-      if (editingId) {
-        const { error } = await supabase.from('investimentos').update(payload).eq('id', editingId);
-        if (!error) {
-          setPortfolio(portfolio.map(item => item.id === editingId ? { ...item, ...payload } : item));
+        const novoValor = existingAsset.valor_investido - valor;
+        if (novoValor <= 0) {
+          const { error } = await supabase.from('investimentos').delete().eq('id', existingAsset.id);
+          if (!error) {
+            setPortfolio(portfolio.filter(item => item.id !== existingAsset.id));
+          }
+        } else {
+          const payload = {
+            valor_investido: novoValor
+          };
+          const { error } = await supabase.from('investimentos').update(payload).eq('id', existingAsset.id);
+          if (!error) {
+            setPortfolio(portfolio.map(item => item.id === existingAsset.id ? { ...item, valor_investido: novoValor } : item));
+          }
         }
       } else {
-        const { data, error } = await supabase.from('investimentos').insert(payload).select().single();
-        if (!error && data) {
-          setPortfolio([data, ...portfolio]);
+        const existingAsset = portfolio.find(item => item.ativo === form.ativo && item.categoria === form.categoria);
+        if (existingAsset && !editingId) {
+          const novoValor = existingAsset.valor_investido + valor;
+          const payload = {
+            valor_investido: novoValor,
+            rendimento_percentual: rendimento || existingAsset.rendimento_percentual
+          };
+          const { error } = await supabase.from('investimentos').update(payload).eq('id', existingAsset.id);
+          if (!error) {
+            setPortfolio(portfolio.map(item => item.id === existingAsset.id ? { ...item, ...payload } : item));
+          }
+        } else {
+          const payload = {
+            user_id: session.user.id,
+            ativo: form.ativo,
+            categoria: form.categoria,
+            valor_investido: valor,
+            rendimento_percentual: rendimento
+          };
+
+          if (editingId) {
+            const { error } = await supabase.from('investimentos').update(payload).eq('id', editingId);
+            if (!error) {
+              setPortfolio(portfolio.map(item => item.id === editingId ? { ...item, ...payload } : item));
+            }
+          } else {
+            const { data, error } = await supabase.from('investimentos').insert(payload).select().single();
+            if (!error && data) {
+              setPortfolio([data, ...portfolio]);
+            }
+          }
         }
       }
       closeModal();
@@ -276,42 +337,92 @@ export default function InvestmentsTab({ session }) {
         <div className="fixed inset-0 bg-primary-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
                 <div className="p-8 border-b border-gray-50 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
-                    <h3 className="text-2xl font-black text-primary-700 dark:text-white">{editingId ? 'Editar Aporte' : 'Novo Aporte'}</h3>
+                    <h3 className="text-2xl font-black text-primary-700 dark:text-white">
+                      {editingId ? 'Editar Operação' : operationType === 'resgate' ? 'Registrar Resgate' : 'Novo Aporte'}
+                    </h3>
                     <button onClick={closeModal} className="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-full text-gray-400 hover:text-rose-500 transition-colors shadow-sm"><X size={24} /></button>
                 </div>
 
                 <form onSubmit={handleSave} className="p-8 space-y-6">
+                    {!editingId && (
+                      <div className="flex bg-gray-100 dark:bg-slate-900 p-1.5 rounded-xl">
+                          <button
+                              type="button"
+                              onClick={() => {
+                                setOperationType('aporte');
+                                setForm(f => ({ ...f, ativo: '' }));
+                              }}
+                              className={`flex-1 py-3 text-sm font-bold rounded-[15px] transition-all ${operationType === 'aporte' ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-sm' : 'text-gray-500 dark:text-slate-400'}`}
+                          >
+                              Aporte
+                          </button>
+                          <button
+                              type="button"
+                              onClick={() => {
+                                setOperationType('resgate');
+                                setForm(f => ({ ...f, ativo: '' }));
+                              }}
+                              className={`flex-1 py-3 text-sm font-bold rounded-[15px] transition-all ${operationType === 'resgate' ? 'bg-white dark:bg-slate-800 text-rose-600 dark:text-rose-400 shadow-sm' : 'text-gray-500 dark:text-slate-400'}`}
+                          >
+                              Resgate
+                          </button>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-1 gap-6">
                         <div>
                             <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">Nome do Ativo</label>
-                            <input
-                                type="text"
-                                value={form.ativo}
-                                onChange={(e) => setForm({ ...form, ativo: e.target.value })}
-                                placeholder="Ex: Tesouro Selic, ITUB4, Bitcoin..."
-                                className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl p-4 outline-none font-bold text-primary-700 dark:text-white transition-all focus:bg-white"
-                                required
-                            />
+                            {operationType === 'resgate' && portfolio.length > 0 ? (
+                                <select
+                                    value={form.ativo}
+                                    onChange={(e) => {
+                                        const selected = portfolio.find(p => p.ativo === e.target.value);
+                                        setForm({ ...form, ativo: e.target.value, categoria: selected ? selected.categoria : 'Renda Fixa' });
+                                    }}
+                                    className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl p-4 outline-none font-bold text-primary-700 dark:text-white transition-all focus:bg-white appearance-none cursor-pointer"
+                                    required
+                                >
+                                    <option value="">Selecione um ativo para resgate...</option>
+                                    {portfolio.map(p => (
+                                        <option key={p.id} value={p.ativo}>
+                                            {p.ativo} ({p.categoria}) - R$ {Number(p.valor_investido).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input
+                                    type="text"
+                                    value={form.ativo}
+                                    onChange={(e) => setForm({ ...form, ativo: e.target.value })}
+                                    placeholder="Ex: Tesouro Selic, ITUB4, Bitcoin..."
+                                    className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl p-4 outline-none font-bold text-primary-700 dark:text-white transition-all focus:bg-white"
+                                    required
+                                />
+                            )}
                         </div>
 
-                        <div>
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">Categoria</label>
-                            <select
-                                value={form.categoria}
-                                onChange={(e) => setForm({ ...form, categoria: e.target.value })}
-                                className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl p-4 outline-none font-bold text-primary-700 dark:text-white transition-all focus:bg-white appearance-none"
-                            >
-                                <option>Renda Fixa</option>
-                                <option>Ações</option>
-                                <option>FIIs</option>
-                                <option>Cripto</option>
-                                <option>Outros</option>
-                            </select>
-                        </div>
+                        {operationType !== 'resgate' && (
+                            <div>
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">Categoria</label>
+                                <select
+                                    value={form.categoria}
+                                    onChange={(e) => setForm({ ...form, categoria: e.target.value })}
+                                    className="w-full bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-primary-500 rounded-2xl p-4 outline-none font-bold text-primary-700 dark:text-white transition-all focus:bg-white appearance-none"
+                                >
+                                    <option>Renda Fixa</option>
+                                    <option>Ações</option>
+                                    <option>FIIs</option>
+                                    <option>Cripto</option>
+                                    <option>Outros</option>
+                                </select>
+                            </div>
+                        )}
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">Valor Aportado R$</label>
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
+                                  {operationType === 'resgate' ? 'Valor a Resgatar R$' : 'Valor Aportado R$'}
+                                </label>
                                 <input
                                     type="number"
                                     step="0.01"
@@ -338,9 +449,13 @@ export default function InvestmentsTab({ session }) {
 
                     <button
                         type="submit"
-                        className="w-full text-white py-5 rounded-xl font-black text-lg transition-all shadow-xl hover:-translate-y-1 bg-primary-600 hover:bg-primary-700 shadow-primary-600/20 mt-4"
+                        className={`w-full text-white py-5 rounded-xl font-black text-lg transition-all shadow-xl hover:-translate-y-1 mt-4 ${
+                          operationType === 'resgate' 
+                            ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/20' 
+                            : 'bg-primary-600 hover:bg-primary-700 shadow-primary-600/20'
+                        }`}
                     >
-                        {editingId ? 'Salvar Alterações' : 'Confirmar Aporte'}
+                        {editingId ? 'Salvar Alterações' : operationType === 'resgate' ? 'Confirmar Resgate' : 'Confirmar Aporte'}
                     </button>
                 </form>
             </div>

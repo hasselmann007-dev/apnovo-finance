@@ -1,44 +1,136 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700;850&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2b8cee; /* Electric Tech Blue */
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  /* Neon Blue Primary Palette */
+  --color-primary-50: #dbfcff;
+  --color-primary-100: #7df4ff;
+  --color-primary-200: #00dbe9;
+  --color-primary-300: #00b4c0;
+  --color-primary-400: #00939c;
+  --color-primary-500: #00f0ff;
+  --color-primary-600: #00f0ff;
+  --color-primary-700: #006970;
+  --color-primary-800: #004f54;
+  --color-primary-900: #002022;
+  --color-primary-950: #0c0e12;
+
+  /* Deep Space Glassmorphism overrides */
+  --color-slate-950: #050608;
+  --color-slate-900: #0A0C10; /* Void-like foundation background */
+  --color-slate-850: rgba(255, 255, 255, 0.05);
+  --color-slate-800: rgba(255, 255, 255, 0.03); /* Frosted Level 1 surface */
+  --color-slate-700: rgba(255, 255, 255, 0.08); /* Frosted Level 2 surface / borders */
+  --color-slate-600: rgba(255, 255, 255, 0.12);
+  --color-slate-500: rgba(255, 255, 255, 0.20);
+  --color-slate-400: #b9cacb;
+  --color-slate-300: #e2e2e8;
+  --color-slate-200: #f1f5f9;
+  --color-slate-100: #f8fafc;
+  --color-slate-50: #f8fafc;
+
+  /* Custom typography definitions */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Sora', serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0f172a; /* Force dark mode background (slate-900) */
-  color: #f8fafc; /* Force dark mode text (slate-50) */
+  background-color: #0A0C10;
+  color: #e2e2e8;
 }
 
-/* Fallback for components requesting dark context */
+/* Force dark mode styles globally */
 html.dark body {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: #0A0C10;
+  color: #e2e2e8;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
+h1, h2, h3, h4, h5, h6, .font-sans {
+  font-family: 'Sora', sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Glassmorphism support */
+.dark .bg-slate-800, 
+.dark .bg-slate-850,
+.dark .bg-white {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .bg-slate-900 {
+  background: #0A0C10 !important;
+}
+
+/* Glass Modals/Dialogs */
+.dark .bg-white.dark\:bg-slate-800 {
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Custom glow card styles */
+.glow-primary {
+  box-shadow: 0 0 32px rgba(0, 240, 255, 0.08);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 32px rgba(139, 92, 246, 0.08);
+}
+
+.glow-nubank {
+  box-shadow: 0 0 32px rgba(255, 120, 0, 0.10);
+}
+
+.glow-xp {
+  box-shadow: 0 0 32px rgba(0, 219, 233, 0.10);
+}
+
+/* Material overlay noise simulating physical card textures */
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Custom styling for inputs */
+input, select, textarea {
+  transition: all 0.2s ease-in-out;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #00f0ff !important;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.25) !important;
 }

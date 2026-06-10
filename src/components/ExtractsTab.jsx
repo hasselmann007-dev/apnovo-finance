@@ -3,7 +3,7 @@ import { Settings, FileText, UploadCloud } from 'lucide-react';
 
 export default function ExtractsTab() {
   return (
-    <div className="animate-in fade-in duration-500 space-y-6">
+    <div className="animate-in fade-in duration-500 space-y-6 pb-32">
       <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm text-center">
         <div className="flex flex-col items-center justify-center py-12">
           <div className="bg-primary-50 dark:bg-primary-900/30 p-6 rounded-full mb-6 relative">

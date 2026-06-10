@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wallet, LayoutDashboard, FileText, Target, Users, LogOut, TrendingUp, Moon, Sun } from 'lucide-react';
+import { Wallet, LayoutDashboard, FileText, Target, Users, LogOut, TrendingUp, Moon, Sun, CreditCard } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function DashboardSidebar({ activeTab, setActiveTab, profile, session, handleLogout }) {
@@ -8,7 +8,7 @@ export default function DashboardSidebar({ activeTab, setActiveTab, profile, ses
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
-    <aside className="w-full md:w-72 bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-slate-800 p-8 flex flex-col font-sans relative z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-colors duration-300">
+    <aside className="hidden md:flex w-full md:w-72 bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-slate-800 p-8 flex-col font-sans relative z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-colors duration-300">
       <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
         <div className="bg-primary-700 p-2.5 rounded-2xl text-white shadow-lg shadow-primary-700/20">
           <TrendingUp size={24} strokeWidth={2.5} />
@@ -22,7 +22,7 @@ export default function DashboardSidebar({ activeTab, setActiveTab, profile, ses
       <nav className="space-y-3 flex-1">
         <button
           onClick={() => setActiveTab('dashboard')}
-          className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition-all font-bold text-sm bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-400 shadow-sm"
+          className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition-all font-bold text-sm ${activeTab === 'dashboard' ? 'bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-400 shadow-sm' : 'text-gray-500 hover:bg-gray-50 dark:text-slate-400 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400'}`}
         >
           <LayoutDashboard size={20} strokeWidth={2.5} /> Visão Geral
         </button>
@@ -44,6 +44,12 @@ export default function DashboardSidebar({ activeTab, setActiveTab, profile, ses
         >
           <TrendingUp size={20} strokeWidth={2} /> Investimentos
         </button>
+        <button
+          onClick={() => setActiveTab('cartoes')}
+          className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all ${activeTab === 'cartoes' ? 'bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-400 shadow-sm' : 'text-gray-500 hover:bg-gray-50 dark:text-slate-400 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400'}`}
+        >
+          <CreditCard size={20} strokeWidth={2} /> Cartões
+        </button>
       </nav>
 
       <div className="mt-auto pt-8 flex flex-col gap-4">
@@ -51,7 +57,7 @@ export default function DashboardSidebar({ activeTab, setActiveTab, profile, ses
           <p className="text-[10px] font-bold uppercase tracking-widest text-primary-500 mb-1">Bem-vindo(a),</p>
           <p className="text-lg font-black leading-tight mb-3 line-clamp-1">{profile?.display_name || 'Usuário'}</p>
           <div className="flex items-center gap-2 text-xs font-bold bg-white px-3 py-2 rounded-xl border border-primary-100/50 break-all text-gray-500 shadow-sm dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
-            {session.user.email}
+            {session?.user?.email}
           </div>
         </div>
         
