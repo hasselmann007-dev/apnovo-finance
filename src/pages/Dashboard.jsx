@@ -557,7 +557,7 @@ export default function Dashboard({ session }) {
                 {renderTabContent()}
                 
                 {/* Global Floating Action Button & Micro-Menu setup */}
-                <div className="fixed bottom-8 right-8 z-50 pointer-events-none flex flex-col items-end gap-3">
+                <div className="fixed bottom-20 right-6 md:bottom-12 md:right-12 z-50 pointer-events-none flex flex-col items-end gap-3">
                   {isQuickMenuOpen && (
                     <div className="pointer-events-auto flex flex-col gap-2 bg-[#0A0C10]/95 border border-white/10 p-3 rounded-2xl shadow-2xl backdrop-blur-md animate-in slide-in-from-bottom-5 duration-200 w-48 mb-2">
                       <div className="text-[9px] font-black text-[#00f0ff] uppercase tracking-widest px-2 mb-1">
@@ -812,7 +812,7 @@ export default function Dashboard({ session }) {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-primary-700/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
+                    <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
                         <div className="p-8 border-b border-gray-50 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
                             <h3 className="text-2xl font-black text-primary-700 dark:text-white">{editingId ? 'Editar Lançamento' : 'Novo Lançamento'}</h3>
                             <button onClick={closeModal} className="p-2 hover:bg-white dark:hover:bg-slate-700 rounded-full text-gray-400 hover:text-rose-500 transition-colors shadow-sm"><X size={24} /></button>

@@ -866,7 +866,7 @@ export default function CreditCardsTab({ session, showSensitiveData = true }) {
                     </div>
                   ) : (
                     <table className="w-full text-left">
-                      <thead className="bg-white/2 text-gray-400 text-[10px] uppercase font-black tracking-widest">
+                      <thead className="bg-white/2 text-gray-400 text-[10px] uppercase font-black tracking-widest hidden md:table-header-group">
                         <tr>
                           {selectedInvoice.status !== 'paid' && <th className="px-6 py-4 w-12"></th>}
                           <th className="px-6 py-4">Descrição</th>
@@ -877,71 +877,78 @@ export default function CreditCardsTab({ session, showSensitiveData = true }) {
                           <th className="px-6 py-4 text-right">Ação</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5">
+                      <tbody className="divide-y divide-white/5 flex flex-col md:table-row-group">
                         {invoiceTransactions.map((tx) => {
                           const isFullyPaid = tx.remaining <= 0;
                           const isChecked = checkedTxIds.includes(tx.id);
 
                           return (
-                            <tr key={tx.id} className={`hover:bg-white/2 transition-all ${isFullyPaid ? 'opacity-50' : ''}`}>
+                            <tr key={tx.id} className={`hover:bg-white/2 transition-all flex flex-col md:table-row p-4 md:p-0 mb-3 md:mb-0 bg-white/2 md:bg-transparent border border-white/5 md:border-none rounded-2xl ${isFullyPaid ? 'opacity-50' : ''}`}>
                               {selectedInvoice.status !== 'paid' && (
-                                <td className="px-6 py-4 text-center">
+                                <td className="px-2 md:px-6 py-2 md:py-4 text-left md:text-center flex items-center gap-2 md:table-cell">
                                   {!tx.is_recurring && !isFullyPaid && (
-                                    <input 
-                                      type="checkbox"
-                                      checked={isChecked}
-                                      onChange={() => handleToggleCheckTx(tx.id)}
-                                      className="w-4 h-4 rounded border-white/10 text-primary-500 focus:ring-primary-500 cursor-pointer bg-white/5"
-                                    />
+                                    <>
+                                      <input 
+                                        type="checkbox"
+                                        checked={isChecked}
+                                        onChange={() => handleToggleCheckTx(tx.id)}
+                                        className="w-4 h-4 rounded border-white/10 text-primary-500 focus:ring-primary-500 cursor-pointer bg-white/5"
+                                      />
+                                      <span className="md:hidden text-[10px] font-black uppercase text-gray-400 tracking-widest">Selecionar para pagamento</span>
+                                    </>
                                   )}
                                 </td>
                               )}
-                              <td className="px-6 py-4">
-                                <p className="font-bold text-white">{tx.description}</p>
+                              <td className="px-2 md:px-6 py-2 md:py-4 md:table-cell">
+                                <p className="font-bold text-white text-sm md:text-base">{tx.description}</p>
                                 <p className="text-[10px] text-gray-400 font-medium mt-0.5">
                                   Compra: {new Date(tx.purchase_date + 'T00:00:00').toLocaleDateString('pt-BR')}
                                 </p>
                               </td>
-                              <td className="px-6 py-4">
-                                <span className="px-3 py-1 bg-white/5 text-slate-300 rounded-lg text-xs font-bold border border-white/5">
+                              <td className="px-2 md:px-6 py-2 md:py-4 md:table-cell">
+                                <span className="md:hidden text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-1">Categoria</span>
+                                <span className="px-3 py-1 bg-white/5 text-slate-300 rounded-lg text-xs font-bold border border-white/5 inline-block">
                                   {tx.category}
                                 </span>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-2 md:px-6 py-2 md:py-4 md:table-cell">
+                                <span className="md:hidden text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-1">Tipo</span>
                                 {tx.is_recurring ? (
-                                  <span className="px-2.5 py-1 bg-indigo-500/10 text-indigo-400 rounded-md text-[10px] font-black uppercase tracking-wider">
+                                  <span className="px-2.5 py-1 bg-indigo-500/10 text-indigo-400 rounded-md text-[10px] font-black uppercase tracking-wider inline-block">
                                     Recorrente
                                   </span>
                                 ) : tx.total_installments > 1 ? (
-                                  <span className="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-md text-[10px] font-black uppercase tracking-wider">
+                                  <span className="px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-md text-[10px] font-black uppercase tracking-wider inline-block">
                                     Parcela ({tx.current_installment}/{tx.total_installments})
                                   </span>
                                 ) : (
-                                  <span className="px-2.5 py-1 bg-white/5 text-gray-400 rounded-md text-[10px] font-black uppercase tracking-wider border border-white/5">
+                                  <span className="px-2.5 py-1 bg-white/5 text-gray-400 rounded-md text-[10px] font-black uppercase tracking-wider border border-white/5 inline-block">
                                     À vista
                                   </span>
                                 )}
                               </td>
-                              <td className="px-6 py-4">
-                                <span className="font-black text-white text-sm">
+                              <td className="px-2 md:px-6 py-2 md:py-4 md:table-cell">
+                                <span className="md:hidden text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-0.5">Valor Total</span>
+                                <span className="font-black text-white text-base">
                                   {formatMoney(tx.amount)}
                                 </span>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-2 md:px-6 py-2 md:py-4 md:table-cell">
+                                <span className="md:hidden text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-0.5">Saldo Restante</span>
                                 {isFullyPaid ? (
                                   <span className="inline-flex items-center gap-1 text-emerald-400 text-xs font-bold">
                                     <CheckCircle2 size={14} /> Quitada
                                   </span>
                                 ) : (
-                                  <span className="font-black text-rose-400 text-sm">
+                                  <span className="font-black text-rose-400 text-base">
                                     {formatMoney(tx.remaining)}
                                   </span>
                                 )}
                               </td>
-                              <td className="px-6 py-4 text-right">
+                              <td className="px-2 md:px-6 py-2 md:py-4 text-left md:text-right flex md:table-cell">
                                 <button
                                   onClick={() => handleDeleteTransaction(tx)}
-                                  className="p-2.5 text-gray-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors"
+                                  className="p-2.5 text-gray-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors bg-white/5 md:bg-transparent"
                                   title="Excluir Transação"
                                 >
                                   <Trash2 size={16} />
@@ -1017,7 +1024,7 @@ export default function CreditCardsTab({ session, showSensitiveData = true }) {
       {/* MODAL NOVO CARTÃO */}
       {isCardModalOpen && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10 animate-in zoom-in-95 duration-200">
+          <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-white/10 animate-in zoom-in-95 duration-200">
             <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/2">
               <h3 className="text-xl font-black text-white">Adicionar Cartão de Crédito</h3>
               <button 
@@ -1116,7 +1123,7 @@ export default function CreditCardsTab({ session, showSensitiveData = true }) {
       {/* MODAL NOVA COMPRA */}
       {isTxModalOpen && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-white/10 animate-in zoom-in-95 duration-200">
+          <div className="bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-white/10 animate-in zoom-in-95 duration-200">
             <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/2">
               <div className="flex items-center gap-2">
                 <CreditCard className="text-rose-500" size={22} />
@@ -1262,7 +1269,7 @@ export default function CreditCardsTab({ session, showSensitiveData = true }) {
       {/* MODAL PAGAMENTO DE FATURA */}
       {isPaymentModalOpen && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10 animate-in zoom-in-95 duration-200">
+          <div className="bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-white/10 animate-in zoom-in-95 duration-200">
             <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/2">
               <h3 className="text-xl font-black text-white">Efetuar Pagamento</h3>
               <button 
@@ -1323,7 +1330,7 @@ export default function CreditCardsTab({ session, showSensitiveData = true }) {
       {/* MODAL RECIBO DIGITAL */}
       {receipt && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-850 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10 animate-in zoom-in-95 duration-200 relative noise-overlay">
+          <div className="bg-slate-850 w-full max-w-md rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-white/10 animate-in zoom-in-95 duration-200 relative noise-overlay">
             
             {/* Success confetti light */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>

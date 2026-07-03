@@ -309,11 +309,11 @@ export default function InvestmentsTab({ session }) {
                         </p>
                     </div>
                     <div className="flex gap-2">
-                        <button onClick={() => startEdit(item)} className="p-2 text-primary-600 hover:bg-primary-100 rounded-lg transition-colors dark:hover:bg-primary-900/30">
-                            <Edit3 size={16} />
+                        <button onClick={() => startEdit(item)} className="p-3 text-primary-600 hover:bg-primary-100 rounded-lg transition-colors dark:hover:bg-primary-900/30" title="Editar Ativo">
+                            <Edit3 size={18} />
                         </button>
-                        <button onClick={() => deleteItem(item.id)} className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors dark:hover:bg-rose-900/30">
-                            <Trash2 size={16} />
+                        <button onClick={() => deleteItem(item.id)} className="p-3 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors dark:hover:bg-rose-900/30" title="Excluir Ativo">
+                            <Trash2 size={18} />
                         </button>
                     </div>
                     </div>
@@ -326,7 +326,7 @@ export default function InvestmentsTab({ session }) {
       
       <button 
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 md:bottom-12 md:right-12 bg-primary-600 hover:bg-primary-700 text-white px-6 py-4 rounded-2xl font-bold shadow-2xl shadow-primary-600/30 transition-all hover:scale-105 flex items-center gap-3 z-40 group border border-primary-500"
+        className="fixed bottom-24 right-6 md:bottom-12 md:right-12 bg-primary-600 hover:bg-primary-700 text-white px-6 py-4 rounded-2xl font-bold shadow-2xl shadow-primary-600/30 transition-all hover:scale-105 flex items-center gap-3 z-40 group border border-primary-500"
       >
         <Plus size={24} strokeWidth={3} className="bg-white text-primary-600 rounded-full p-0.5 group-hover:rotate-90 transition-transform" />
         Novo Aporte
@@ -335,7 +335,7 @@ export default function InvestmentsTab({ session }) {
       {/* Modal Novo Aporte */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-primary-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
+             <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200 border border-gray-100 dark:border-slate-700">
                 <div className="p-8 border-b border-gray-50 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-800/50">
                     <h3 className="text-2xl font-black text-primary-700 dark:text-white">
                       {editingId ? 'Editar Operação' : operationType === 'resgate' ? 'Registrar Resgate' : 'Novo Aporte'}

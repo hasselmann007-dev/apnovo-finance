@@ -295,7 +295,7 @@ export default function OverviewTab({
                         </p>
                       </td>
                       <td className="px-2 md:px-8 py-2 md:py-6 md:text-right">
-                        <div className="flex justify-start md:justify-end gap-3 md:opacity-0 group-hover:opacity-100 transition-opacity mt-2 md:mt-0 items-center">
+                        <div className="flex justify-start md:justify-end gap-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity mt-2 md:mt-0 items-center">
                           <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-400 mr-2" title="Marcar como Pago/Recebido">
                             <input 
                               type="checkbox" 
