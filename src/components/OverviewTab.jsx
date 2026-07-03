@@ -103,31 +103,22 @@ export default function OverviewTab({
           <p className="text-[10px] text-slate-500 dark:text-gray-400 font-bold uppercase tracking-widest mt-0.5">Finanças Consolidadas</p>
         </div>
         <div className="relative">
-          <button
-            onClick={() => {
-              if (mobileMonthInputRef.current) {
-                if (typeof mobileMonthInputRef.current.showPicker === 'function') {
-                  mobileMonthInputRef.current.showPicker();
-                } else {
-                  mobileMonthInputRef.current.click();
-                }
-              }
-            }}
-            onTouchStart={(e) => {
-              e.stopPropagation();
-            }}
-            className="min-h-[48px] min-w-[48px] px-4 py-2.5 flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl cursor-pointer text-slate-700 dark:text-slate-200 font-bold text-xs uppercase tracking-wider shadow-sm"
-          >
+          {/* Botão visual estilizado por baixo */}
+          <div className="min-h-[48px] min-w-[48px] px-4 py-2.5 flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-slate-700 dark:text-slate-200 font-bold text-xs uppercase tracking-wider shadow-sm pointer-events-none">
             <Calendar size={16} className="text-primary-500" />
             <span>{selectedMonth ? getMonthName(selectedMonth).split(' de ')[0] : 'Filtrar'}</span>
-          </button>
+          </div>
+          {/* Input real invisível cobrindo todo o botão com toque físico direto */}
           <input
-            ref={mobileMonthInputRef}
             type="month"
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className="absolute top-0 left-0 w-full h-full opacity-0 pointer-events-none"
-            style={{ pointerEvents: 'none' }}
+            onChange={(e) => {
+              if (e.target.value) {
+                setSelectedMonth(e.target.value);
+              }
+            }}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            style={{ fontSize: '16px' }}
           />
         </div>
       </div>

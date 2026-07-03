@@ -443,16 +443,11 @@ export default function Dashboard({ session }) {
         <div className="min-h-screen bg-slate-50 dark:bg-[#0A0C10] flex flex-col md:flex-row font-sans text-slate-900 dark:text-slate-300 relative transition-colors duration-300">
             {/* Mobile Header */}
             <header className="md:hidden fixed top-0 left-0 w-full z-45 bg-white/80 dark:bg-[#0A0C10]/80 backdrop-blur-md border-b border-slate-150 dark:border-white/5 px-6 py-4 flex justify-between items-center">
-                <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('configuracoes')}>
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-500/20 to-secondary-500/20 flex items-center justify-center border border-primary-500/30">
-                        <span className="text-primary-600 dark:text-primary-400 font-bold text-sm">
-                            {profile?.display_name ? profile.display_name.slice(0, 2).toUpperCase() : 'US'}
-                        </span>
+                <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
+                    <div className="bg-primary-700 p-2 rounded-xl text-white">
+                        <TrendingUp size={18} strokeWidth={2.5} />
                     </div>
-                    <div>
-                        <p className="text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest leading-none">Bem-vindo</p>
-                        <h1 className="font-extrabold text-sm text-slate-900 dark:text-white mt-1">Olá, {profile?.display_name || 'Usuário'}</h1>
-                    </div>
+                    <span className="font-black text-sm tracking-tight text-slate-900 dark:text-white">FINANCE ORGANIZER</span>
                 </div>
                 <div className="flex gap-2">
                     <button 
@@ -535,12 +530,13 @@ export default function Dashboard({ session }) {
 
             <main className="flex-1 px-6 pt-24 pb-28 md:p-12 max-h-screen overflow-y-auto w-full relative z-0">
 
-                <header className="hidden md:flex flex-row justify-between items-center gap-4 mb-10 pb-6 border-b border-white/5">
+                <header className="hidden md:flex flex-row justify-between items-center gap-4 mb-10 pb-6 border-b border-slate-150 dark:border-white/5">
                     <div>
-                        {activeTab === 'dashboard' && <h2 className="text-3xl font-black text-white tracking-tight">Visão Geral</h2>}
-                        {activeTab === 'extratos' && <h2 className="text-3xl font-black text-white tracking-tight">Extrato</h2>}
-                        {activeTab === 'investimentos' && <h2 className="text-3xl font-black text-white tracking-tight">Investimentos</h2>}
-                        {activeTab === 'cartoes' && <h2 className="text-3xl font-black text-white tracking-tight">Cartões</h2>}
+                        {activeTab === 'dashboard' && <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Visão Geral</h2>}
+                        {activeTab === 'extratos' && <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Extrato</h2>}
+                        {activeTab === 'investimentos' && <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Investimentos</h2>}
+                        {activeTab === 'cartoes' && <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Cartões</h2>}
+                        {activeTab === 'configuracoes' && <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Configurações</h2>}
                     </div>
                     <div className="flex items-center gap-4">
                         {activeTab === 'dashboard' && (
@@ -548,24 +544,24 @@ export default function Dashboard({ session }) {
                                 type="month"
                                 value={selectedMonth}
                                 onChange={(e) => setSelectedMonth(e.target.value)}
-                                className="bg-white/5 border border-white/10 text-white font-bold px-4 py-2.5 rounded-xl outline-none focus:border-primary-500 transition-all cursor-pointer text-sm"
+                                className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white font-bold px-4 py-2.5 rounded-xl outline-none focus:border-primary-500 transition-all cursor-pointer text-sm shadow-sm dark:shadow-none"
                             />
                         )}
                         
                         {/* Quick Command Button */}
                         <button
                             onClick={() => setIsCommandBarOpen(true)}
-                            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-2.5 rounded-xl font-bold transition-all border border-white/5 text-sm"
+                            className="flex items-center gap-2 bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 text-slate-700 dark:text-white px-4 py-2.5 rounded-xl font-bold transition-all border border-slate-200 dark:border-white/5 text-sm shadow-sm dark:shadow-none"
                             title="Abrir Painel de Comandos (Pressione '/')"
                         >
-                            <span className="bg-white/10 text-gray-400 text-[10px] px-1.5 py-0.5 rounded border border-white/10 mr-1">/</span>
+                            <span className="bg-slate-100 dark:bg-white/10 text-slate-550 dark:text-gray-400 text-[10px] px-1.5 py-0.5 rounded border border-slate-200 dark:border-white/10 mr-1 font-mono">/</span>
                             Comandos Rápidos
                         </button>
                         
                         {/* Privacy Toggle Button */}
                         <button
                             onClick={() => setShowSensitiveData(!showSensitiveData)}
-                            className="p-3 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-all border border-white/5"
+                            className="p-3 bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 text-slate-700 dark:text-white rounded-xl transition-all border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none"
                             title={showSensitiveData ? "Ocultar Valores" : "Mostrar Valores"}
                         >
                             {showSensitiveData ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -574,7 +570,7 @@ export default function Dashboard({ session }) {
                         {activeTab === 'dashboard' && (
                             <button
                                 onClick={() => setIsModalOpen(true)}
-                                className="flex items-center justify-center gap-2 bg-[#00f0ff] hover:bg-[#00d8e6] text-[#0A0C10] px-6 py-2.5 rounded-xl font-black transition-all shadow-xl shadow-[#00f0ff]/10 hover:-translate-y-0.5 text-sm"
+                                className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 dark:bg-[#00f0ff] dark:hover:bg-[#00d8e6] text-white dark:text-[#0A0C10] px-6 py-2.5 rounded-xl font-black transition-all shadow-xl shadow-primary-500/10 dark:shadow-[#00f0ff]/10 hover:-translate-y-0.5 text-sm"
                             >
                                 <Plus size={18} strokeWidth={3} /> Lançar Transação
                             </button>

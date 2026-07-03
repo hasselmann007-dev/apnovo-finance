@@ -29,3 +29,11 @@
 - [x] Executada auditoria mobile geral de margins e vazamento horizontal.
 - [x] Executada verificação de build com sucesso (`npm.cmd run build`).
 - [x] Enviados os commits com sucesso para a branch `main` do GitHub.
+
+## 📅 [2026-07-03] - Execução e Publicação da Otimização UX, Temas & Configurações 2.3
+- [x] Otimizada a mecânica de toque do Month Picker no mobile em `OverviewTab.jsx` por sobreposição invisível do input nativo HTML5, eliminando falhas de eventos.
+- [x] Removida a exibição do nome do usuário ("Olá, danilohasselmann007") do Mobile Header em `Dashboard.jsx`, substituindo pela marca minimalista "FINANCE ORGANIZER".
+- [x] Ajustado o input de mês do Desktop e botões do painel superior em `Dashboard.jsx` para suporte refinado ao tema claro.
+- [x] Iniciado o servidor local do Vite com exposição de rede local (`--host`) nas portas corretas.
+- [x] Executada verificação de build com sucesso (`npm.cmd run build`).
+- [x] Enviados os commits com sucesso para a branch `main` do GitHub.
