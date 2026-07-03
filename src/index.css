@@ -42,11 +42,12 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0A0C10;
-  color: #e2e2e8;
+  background-color: #f8fafc; /* bg-slate-50 */
+  color: #0f172a; /* text-slate-900 */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Force dark mode styles globally */
+/* Dark mode styles globally */
 html.dark body {
   background-color: #0A0C10;
   color: #e2e2e8;

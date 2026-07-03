@@ -3,17 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { 
   Plus, X, MessageCircle, LayoutDashboard, FileText, TrendingUp, CreditCard, LogOut, 
-  Eye, EyeOff, Search, Terminal, Sparkles, Check, ChevronRight, AlertCircle 
+  Eye, EyeOff, Search, Terminal, Sparkles, Check, ChevronRight, AlertCircle, Settings, Sun, Moon 
 } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
 
 import DashboardSidebar from '../components/DashboardSidebar';
 import OverviewTab from '../components/OverviewTab';
 import ExtractsTab from '../components/ExtractsTab';
 import InvestmentsTab from '../components/InvestmentsTab';
 import CreditCardsTab from '../components/CreditCardsTab';
+import SettingsTab from '../components/SettingsTab';
 
 export default function Dashboard({ session }) {
     const navigate = useNavigate();
+    const { isDarkMode, toggleTheme } = useTheme();
     const [transactions, setTransactions] = useState([]);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -412,6 +415,8 @@ export default function Dashboard({ session }) {
               showSensitiveData={showSensitiveData}
               setActiveTab={setActiveTab}
               openCommandBar={() => setIsCommandBarOpen(true)}
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
             />
           );
         case 'extratos':
@@ -420,80 +425,103 @@ export default function Dashboard({ session }) {
           return <InvestmentsTab session={session} />;
         case 'cartoes':
           return <CreditCardsTab session={session} showSensitiveData={showSensitiveData} />;
+        case 'configuracoes':
+          return (
+            <SettingsTab 
+              session={session}
+              profile={profile}
+              handleLogout={handleLogout}
+              onProfileUpdate={(updatedProfile) => setProfile(updatedProfile)}
+            />
+          );
         default:
           return null;
       }
     };
 
     return (
-        <div className="min-h-screen bg-[#0A0C10] dark:bg-slate-900 flex flex-col md:flex-row font-sans text-slate-300 dark:text-slate-100 relative transition-colors">
+        <div className="min-h-screen bg-slate-50 dark:bg-[#0A0C10] flex flex-col md:flex-row font-sans text-slate-900 dark:text-slate-300 relative transition-colors duration-300">
             {/* Mobile Header */}
-            <header className="md:hidden fixed top-0 left-0 w-full z-45 bg-[#0A0C10]/80 backdrop-blur-md border-b border-white/5 px-6 py-4 flex justify-between items-center">
-                <div className="flex items-center gap-3">
+            <header className="md:hidden fixed top-0 left-0 w-full z-45 bg-white/80 dark:bg-[#0A0C10]/80 backdrop-blur-md border-b border-slate-150 dark:border-white/5 px-6 py-4 flex justify-between items-center">
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('configuracoes')}>
                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-500/20 to-secondary-500/20 flex items-center justify-center border border-primary-500/30">
-                        <span className="text-primary-400 font-bold text-sm">
+                        <span className="text-primary-600 dark:text-primary-400 font-bold text-sm">
                             {profile?.display_name ? profile.display_name.slice(0, 2).toUpperCase() : 'US'}
                         </span>
                     </div>
                     <div>
-                        <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest leading-none">Bem-vindo</p>
-                        <h1 className="font-extrabold text-sm text-white mt-1">Olá, {profile?.display_name || 'Usuário'}</h1>
+                        <p className="text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest leading-none">Bem-vindo</p>
+                        <h1 className="font-extrabold text-sm text-slate-900 dark:text-white mt-1">Olá, {profile?.display_name || 'Usuário'}</h1>
                     </div>
                 </div>
                 <div className="flex gap-2">
                     <button 
                         onClick={() => setShowSensitiveData(!showSensitiveData)}
-                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-slate-300"
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-slate-300"
                         title={showSensitiveData ? "Ocultar Valores" : "Mostrar Valores"}
                     >
                         {showSensitiveData ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                     <button 
+                        onClick={toggleTheme}
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-slate-300"
+                        title="Alternar Tema"
+                    >
+                        {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
+                    <button 
                         onClick={() => setIsCommandBarOpen(true)}
-                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#00f0ff]/10 hover:bg-[#00f0ff]/20 border border-[#00f0ff]/20 text-[#00f0ff] transition-colors"
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary-500/10 hover:bg-primary-500/20 border border-primary-500/20 text-primary-600 dark:text-primary-400 transition-colors"
                         title="Comandos Rápidos"
                     >
                         <Terminal size={18} />
                     </button>
                     <button 
-                        onClick={handleLogout}
-                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-rose-500"
-                        title="Sair"
+                        onClick={() => setActiveTab('configuracoes')}
+                        className={`w-10 h-10 flex items-center justify-center rounded-xl transition-colors ${activeTab === 'configuracoes' ? 'bg-primary-650 text-white shadow-sm' : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300'}`}
+                        title="Configurações"
                     >
-                        <LogOut size={18} />
+                        <Settings size={18} />
                     </button>
                 </div>
             </header>
 
             {/* Mobile Bottom Navigation */}
-            <nav className="md:hidden fixed bottom-0 left-0 w-full z-45 bg-[#0A0C10]/80 backdrop-blur-md border-t border-white/5 px-4 py-3 pb-safe flex justify-around items-center">
+            <nav className="md:hidden fixed bottom-0 left-0 w-full z-45 bg-white/80 dark:bg-[#0A0C10]/80 backdrop-blur-md border-t border-slate-150 dark:border-white/5 px-4 py-3 pb-safe flex justify-around items-center">
                 <button 
                     onClick={() => setActiveTab('dashboard')}
-                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'dashboard' ? 'text-primary-500' : 'text-gray-400'}`}
+                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'dashboard' ? 'text-primary-600 dark:text-primary-500' : 'text-slate-550 dark:text-gray-400'}`}
                 >
                     <LayoutDashboard size={20} />
                     <span className="text-[10px] font-bold">Início</span>
                 </button>
                 <button 
                     onClick={() => setActiveTab('extratos')}
-                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'extratos' ? 'text-primary-500' : 'text-gray-400'}`}
+                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'extratos' ? 'text-primary-600 dark:text-primary-500' : 'text-slate-550 dark:text-gray-400'}`}
                 >
                     <FileText size={20} />
                     <span className="text-[10px] font-bold">Extrato</span>
                 </button>
                 <button 
                     onClick={() => setActiveTab('cartoes')}
-                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'cartoes' ? 'text-primary-500' : 'text-gray-400'}`}
+                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'cartoes' ? 'text-primary-600 dark:text-primary-500' : 'text-slate-550 dark:text-gray-400'}`}
                 >
                     <CreditCard size={20} />
                     <span className="text-[10px] font-bold">Cartões</span>
                 </button>
                 <button 
                     onClick={() => setActiveTab('investimentos')}
-                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'investimentos' ? 'text-primary-500' : 'text-gray-400'}`}
+                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'investimentos' ? 'text-primary-600 dark:text-primary-500' : 'text-slate-550 dark:text-gray-400'}`}
                 >
                     <TrendingUp size={20} />
                     <span className="text-[10px] font-bold">Ativos</span>
+                </button>
+                <button 
+                    onClick={() => setActiveTab('configuracoes')}
+                    className={`flex flex-col items-center justify-center gap-1 transition-all active:scale-95 ${activeTab === 'configuracoes' ? 'text-primary-600 dark:text-primary-500' : 'text-slate-550 dark:text-gray-400'}`}
+                >
+                    <Settings size={20} />
+                    <span className="text-[10px] font-bold">Ajustes</span>
                 </button>
             </nav>
 

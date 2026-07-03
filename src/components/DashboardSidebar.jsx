@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wallet, LayoutDashboard, FileText, Target, Users, LogOut, TrendingUp, Moon, Sun, CreditCard } from 'lucide-react';
+import { Wallet, LayoutDashboard, FileText, Target, Users, LogOut, TrendingUp, Moon, Sun, CreditCard, Settings } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function DashboardSidebar({ activeTab, setActiveTab, profile, session, handleLogout }) {
@@ -50,22 +50,35 @@ export default function DashboardSidebar({ activeTab, setActiveTab, profile, ses
         >
           <CreditCard size={20} strokeWidth={2} /> Cartões
         </button>
+        <button
+          onClick={() => setActiveTab('configuracoes')}
+          className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-sm transition-all ${activeTab === 'configuracoes' ? 'bg-primary-50 dark:bg-primary-900/40 text-primary-700 dark:text-primary-400 shadow-sm' : 'text-gray-500 hover:bg-gray-50 dark:text-slate-400 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400'}`}
+        >
+          <Settings size={20} strokeWidth={2} /> Configurações
+        </button>
       </nav>
 
-      <div className="mt-auto pt-8 flex flex-col gap-4">
-        <div className="p-6 bg-primary-50 rounded-xl text-primary-700 shadow-inner border border-primary-100 dark:bg-slate-800/80 dark:text-slate-200 dark:border-slate-700">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-primary-500 mb-1">Bem-vindo(a),</p>
-          <p className="text-lg font-black leading-tight mb-3 line-clamp-1">{profile?.display_name || 'Usuário'}</p>
-          <div className="flex items-center gap-2 text-xs font-bold bg-white px-3 py-2 rounded-xl border border-primary-100/50 break-all text-gray-500 shadow-sm dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
-            {session?.user?.email}
-          </div>
-        </div>
-        
+      <div className="mt-auto pt-8 flex flex-col gap-3">
+        {/* Alternar Tema */}
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center justify-between px-5 py-4 rounded-2xl transition-all font-bold text-sm text-gray-500 hover:bg-gray-50 dark:text-slate-400 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400"
+          title="Alternar Tema"
+        >
+          <span className="flex items-center gap-3">
+            {isDarkMode ? <Sun size={20} strokeWidth={2} /> : <Moon size={20} strokeWidth={2} />}
+            {isDarkMode ? 'Modo Claro' : 'Modo Escuro'}
+          </span>
+          <span className="text-[10px] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md font-black uppercase text-gray-400">
+            {isDarkMode ? 'Claro' : 'Escuro'}
+          </span>
+        </button>
+
         <button 
           onClick={handleLogout}
-          className="w-full flex justify-center items-center gap-2 py-4 text-rose-500 font-bold hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-2xl transition-colors text-sm"
+          className="w-full flex items-center gap-3 px-5 py-4 text-rose-500 font-bold hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-2xl transition-colors text-sm"
         >
-          <LogOut size={18} strokeWidth={2.5} /> Sair da Conta
+          <LogOut size={20} strokeWidth={2} /> Sair da Conta
         </button>
       </div>
     </aside>

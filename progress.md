@@ -17,3 +17,15 @@
 - [x] Removida a dependência de hover no celular em `OverviewTab.jsx`, forçando a visibilidade de ações de transação em telas touch.
 - [x] Executada verificação de build com sucesso (`npm.cmd run build`).
 - [x] Enviados os commits com sucesso para a branch `main` do GitHub (Commit `5775cf9`).
+
+## 📅 [2026-07-03] - Execução e Publicação da Otimização UX, Temas & Configurações 2.2
+- [x] Otimizado o Month Picker mobile no `OverviewTab.jsx` usando input nativo com acionamento por botão touch target de 48x48px (Task 1).
+- [x] Implementada a arquitetura dual-theme (Light/Dark Mode) em `ThemeContext.jsx` e `index.css` com transições suaves (Task 2).
+- [x] Integrados os botões de alternância de tema no Mobile Header de `Dashboard.jsx` e na Sidebar de `DashboardSidebar.jsx` (Task 2).
+- [x] Criada a nova aba de Perfil e Segurança em `SettingsTab.jsx` e removido o bloco de perfil estático da Sidebar (Task 3).
+- [x] Desenvolvidos os fluxos de alteração de nome, gradientes de avatar, alteração de senha segura com hashing Supabase e logout (Task 3).
+- [x] Redesenhado o gráfico Donut de alocação Recharts em `OverviewTab.jsx` para mostrar o saldo líquido centralizado no desktop e empilhado no mobile (Task 4).
+- [x] Implementadas as micro-interações de clique no gráfico de donut para filtrar dinamicamente a tabela do histórico (Task 4).
+- [x] Executada auditoria mobile geral de margins e vazamento horizontal.
+- [x] Executada verificação de build com sucesso (`npm.cmd run build`).
+- [x] Enviados os commits com sucesso para a branch `main` do GitHub.

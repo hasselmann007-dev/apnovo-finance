@@ -1,18 +1,26 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const isDarkMode = true;
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('finance_theme');
+    return savedTheme !== 'light'; // Padrão é Dark Mode se não houver preferência salva
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.add('dark');
-    localStorage.setItem('finance_theme', 'dark');
-  }, []);
+    if (isDarkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('finance_theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('finance_theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const toggleTheme = () => {
-    // Disabled in Fintech Dark Mode
+    setIsDarkMode((prev) => !prev);
   };
 
   return (
