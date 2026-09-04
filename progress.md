@@ -37,3 +37,14 @@
 - [x] Iniciado o servidor local do Vite com exposição de rede local (`--host`) nas portas corretas.
 - [x] Executada verificação de build com sucesso (`npm.cmd run build`).
 - [x] Enviados os commits com sucesso para a branch `main` do GitHub.
+
+## 📅 [2026-09-03] - Execução e Publicação da Landing Page & Login Integrado 2.4 (xbusiness.online)
+- [x] Criada a nova Landing Page demonstrativa de alto impacto em `src/pages/Login.jsx` com foco em mobile, iPhone e web desktop.
+- [x] Adicionada seção editorial de Missão e Objetivo do Finance Organizer (clareza financeira em 30 segundos diários, sem planilhas confusas).
+- [x] Desenvolvido showcase interativo com mockup da interface do app (visualização Donut, controle de faturas de cartão e console de IA).
+- [x] Criado CTA principal chamativo para "Testar Gratuitamente por 14 Dias" sem compromisso e sem cartão antecipado.
+- [x] Integrado o formulário de Login e Cadastro na mesma tela (com switcher intuitivo entre "Teste Grátis" e "Entrar na Conta"), eliminando fricção.
+- [x] Adicionado suporte nativo ao Modo Claro e Modo Escuro em toda a landing page com alternador no topo via `useTheme()`.
+- [x] Otimizada ergonomia para iPhone (safe areas, touch targets >= 48px, tipografia fluida sem quebras horizontais).
+- [x] Compilação de produção (`npm.cmd run build`) executada com sucesso total em 1.45s.
+- [x] Commits enviados para a branch `main` no GitHub.
